@@ -16,7 +16,7 @@ def _find_mean_array(ds):
         mean_array[i] = curr_sum/len(ds)
 
 
-TARGET_DIFF_VALUE = 50
+TARGET_DIFF_VALUE = 200
 
 
 def _evaluate(ds):
