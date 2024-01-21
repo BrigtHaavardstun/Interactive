@@ -8,7 +8,7 @@ const DraggableGraph = ({ dataSetOrg, setDataSet, lineColor, setRandomColor }) =
 
   const state = {
     dataSet: dataSetOrg,
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    labels: ["T1", "T2", "T3", "T4", "T5", "T6", "T7"],
     options: {
       tooltips: { enabled: true },
       scales: {
@@ -22,7 +22,7 @@ const DraggableGraph = ({ dataSetOrg, setDataSet, lineColor, setRandomColor }) =
           {
             scaleLabel: {
               display: true,
-              labelString: "Color Strength",
+              labelString: "Effekt kW",
               fontSize: 14
             },
             ticks: {
