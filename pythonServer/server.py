@@ -28,10 +28,11 @@ def _evaluate(ds):
         diff[i] = abs(max_curr - min_curr)
 
     diff_sum = sum(diff)
-    return diff_sum <= TARGET_DIFF_VALUE
+    small_error = 3
+    return diff_sum <= (TARGET_DIFF_VALUE + small_error)
 
 
-@app.route('/random', methods=['GET'])
+@app.route('/getCol', methods=['GET'])
 def get_random():
     ds = request.args.get('dataSet')  # Get the 'ys' parameter value
     if ds is not None:
@@ -115,6 +116,9 @@ def get_cf():
         return "You have to provide a 'dataSet' parameter and a 'index' parameter.", 400
     else:
         ds = json.loads(ds)  # Parse 'ys' as JSON
+        if _evaluate(ds):
+            return jsonify(ds), 200
+
         cf = get_cf_func(ds)
 
         return jsonify(cf), 200
