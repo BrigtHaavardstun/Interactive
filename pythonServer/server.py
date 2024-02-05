@@ -17,6 +17,7 @@ def get_class():
         ds = [float(y) for y in ds]
         try:
             return_val = jsonify(_classify(ds)), 200
+            print(_classify(ds))
         except Exception as e:
             return_val = e, 400
 
@@ -69,15 +70,6 @@ def get_cf():
         print("We got an error", e)
         return "Something  went wrong", 500
 
-
-
-def test():
-    ds = [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-          [5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
-          [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]]
-    print(list([round(val, 3) for val in row] for row in ds))
-    new_ds = get_cf_func(ds)
-    print(list([round(val, 3) for val in row] for row in new_ds))
 
 
 if __name__ == '__main__':

@@ -53,7 +53,8 @@ const DraggableGraph = ({ dataSetCurrent,setDataCurrent, dataSetCF,dataSetOrigin
         ]
       },
       legend: {
-        display: true
+        display: true,
+
       },
       dragData: true,
       dragOptions: {
