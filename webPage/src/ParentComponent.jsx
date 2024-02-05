@@ -26,7 +26,7 @@ export const ParentComponent = () => {
     }, [dataSetOrg]);
 
     const updateColorOrg = () => {  // Receive setLineColor as a prop
-        axios.get('http://localhost:8765/getCol', {
+        axios.get('http://localhost:8765/getClass', {
             params: {
                 dataSet: JSON.stringify(dataSetOrg),  // Convert dataSet to a JSON string
             }
@@ -35,10 +35,12 @@ export const ParentComponent = () => {
                 // Change the color based on the response
 
                 if (res.data == 1) {
-                    setLineColorOrg("green");
+                    setLineColorOrg("rgba(0,0,255,0.5)");
                 }
-                else {
-                    setLineColorOrg("red");
+                else if(res.data == 2) {
+                    setLineColorOrg("rgba(255,0,0,0.5)");
+                } else {
+                    throw Error("Not a valid class!");
                 }
 
             })
@@ -46,9 +48,7 @@ export const ParentComponent = () => {
                 console.error('Error:', error);
             });
     };
-    useEffect(() => {
-        console.log("WARNING WARNING! Dataset update!")
-    }, [dataSetOrg]);
+
     useEffect(() => { updateColorOrg(); }, [dataSetOrg]);
 
     // Counterfactual data
@@ -61,7 +61,8 @@ export const ParentComponent = () => {
         console.log("CF get called");
         axios.get('http://localhost:8765/cf', {
             params: {
-                dataSet: JSON.stringify(dataSetOrg)  // Convert dataSet to a JSON string
+                dataSet: JSON.stringify(dataSetOrg),// Convert dataSet to a JSON string
+                targetClass: 1 // The class we want to have a counterfactual of
             }
         })
             .then((res) => {
@@ -83,7 +84,7 @@ export const ParentComponent = () => {
     useEffect(() => { getCFData(); }, [dataSetOrg]);
 
     const updateCFColor = () => {  // Receive setLineColor as a prop
-        axios.get('http://localhost:8765/getCol', {
+        axios.get('http://localhost:8765/getClass', {
             params: {
                 dataSet: JSON.stringify(dataSetCF)  // Convert dataSet to a JSON string
             }
@@ -92,10 +93,12 @@ export const ParentComponent = () => {
                 // Change the color based on the response
 
                 if (res.data == 1) {
-                    setLineColorCF("green");
+                    setLineColorCF("rgba(0,0,255,0.5)");
                 }
-                else {
-                    setLineColorCF("red")
+                else if(res.data==2) {
+                    setLineColorCF("rgba(255,0,0,0.5)");
+                }else {
+                    throw Error("Not a valid class!");
                 }
 
             })
@@ -115,7 +118,7 @@ export const ParentComponent = () => {
 
     return (
         <div>
-            <DraggableGraph dataSetOrg={dataSetOrg} updateOrgData={updateOrgData} dataSetCF={dataSetCF} />
+            <DraggableGraph dataSetOrg={dataSetOrg} updateOrgData={updateOrgData} dataSetCF={dataSetCF} lineColorOrg={lineColorOrg} lineColorCF={lineColorCF} />
         </div>
     );
 };

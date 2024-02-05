@@ -5,7 +5,7 @@ import "chartjs-plugin-dragdata";
 
 
 
-const DraggableGraph = ({ dataSetOrg, updateOrgData, dataSetCF }) => {
+const DraggableGraph = ({ dataSetOrg, updateOrgData, dataSetCF, lineColorOrg,lineColorCF}) => {
   //console.log("PROPS:", dataSetOrg);
   const data_label = Array.from({length: dataSetOrg.length}, (_, i) => i);
 
@@ -86,14 +86,14 @@ const DraggableGraph = ({ dataSetOrg, updateOrgData, dataSetCF }) => {
     labels: state.labels,
     datasets: [
       {
-        label: "Orginal 1",
+        label: "Current",
         data: state.dataSet[0],
         lineTension: 0,
-        borderColor: "rgba(255,0,100,0.5)",
+        borderColor: lineColorOrg,
         borderWidth: 5,
         pointRadius: 10,
         pointHoverRadius: 10,
-        pointBackgroundColor: "rgba(255,0,100,0.5)",
+        pointBackgroundColor: lineColorOrg,
         pointBorderWidth: 0,
         spanGaps: false,
         dragData: true,
