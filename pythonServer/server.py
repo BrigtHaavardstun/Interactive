@@ -16,12 +16,12 @@ def _find_mean_array(ds):
         mean_array[i] = curr_sum/len(ds)
 
 
-TARGET_DIFF_VALUE = 200
+TARGET_DIFF_VALUE = 75
 
 
-def _evaluate(ds):
-    diff = [0]*len(ds[0])
-    for i in range(0, len(ds[0])):
+def _evaluate_old(ds):
+    diff = [0]*len(ds)
+    for i in range(0, len(ds)):
         min_curr = min([ds[j][i] for j in range(0, len(ds))])
         max_curr = max([ds[j][i] for j in range(0, len(ds))])
 
@@ -31,12 +31,23 @@ def _evaluate(ds):
     small_error = 3
     return diff_sum <= (TARGET_DIFF_VALUE + small_error)
 
+MAX_VAL = 50
+MIN_VAL = -50
+def _evaluate(ds):
+    global MAX_VAL, MIN_VAL
+    max_curr = max(ds)
+    min_curr = min(ds)
+    print(ds, min_curr, max_curr)
+    return MIN_VAL <= min_curr and max_curr <= MAX_VAL
 
 @app.route('/getCol', methods=['GET'])
 def get_random():
     ds = request.args.get('dataSet')  # Get the 'ys' parameter value
+
     if ds is not None:
         ds = json.loads(ds)  # Parse 'ys' as JSON
+        ds = [float(y) for y in ds]
+        print(ds)
         if _evaluate(ds):
             returnVal = jsonify(1), 200
         else:
@@ -57,7 +68,7 @@ def get_ys():
         return "No 'ys' parameter provided.", 400  # Bad request
 
 
-def get_cf_func(ds):
+def get_cf_func_old(ds):
     print("Does orginal work?", _evaluate(ds))
     new_time_series = [[yVal for yVal in timeSeries] for timeSeries in ds]
 
@@ -103,25 +114,46 @@ def get_cf_func(ds):
     print("Worked?", _evaluate(updated_time_series))
     return updated_time_series
 
-
+def get_cf_func(ds):
+    global MAX_VAL, MIN_VAL
+    new_cf = [y for y in ds]
+    for i, e in enumerate(new_cf):
+        if e > MAX_VAL:
+            new_cf[i] = MAX_VAL
+        if e < MIN_VAL:
+            new_cf[i] = MIN_VAL
+        print(e)
+    print("Correct CF:",new_cf)
+    return new_cf
 @app.route('/cf', methods=['GET'])
 def get_cf():
     """
     we want to find a counterfactual of the index item to make it positive
     @return A counterfactual time series. For now we only change one time series
     """
-    ds = request.args.get('dataSet')  # List of time series
-    # index = request.get("index")
-    if ds is None:  # or index is None:
-        return "You have to provide a 'dataSet' parameter and a 'index' parameter.", 400
-    else:
-        ds = json.loads(ds)  # Parse 'ys' as JSON
-        if _evaluate(ds):
-            return jsonify(ds), 200
+    #return jsonify([10]*10), 200
+    try:
+        ds = request.args.get('dataSet')  # List of time series
+        ds = json.loads(ds)
+        print(ds)
+        print("Type:",type(ds[0]))
 
-        cf = get_cf_func(ds)
 
-        return jsonify(cf), 200
+        # index = request.get("index")
+        if ds is None:  # or index is None:
+            return "You have to provide a 'dataSet' parameter and a 'index' parameter.", 400
+        else:
+
+            if _evaluate(ds):
+                return jsonify(ds), 200
+
+            cf = get_cf_func(ds)
+
+            return jsonify(cf), 200
+
+    except Exception as e:
+        print("We got an error", e)
+        return "Something  went wrong", 500
 
 
 def test():
