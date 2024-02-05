@@ -5,16 +5,30 @@ import axios from 'axios';
 
 export const ParentComponent = () => {
 
+    // Original data TODO: Get this from python script
+    const originalData = [35, 39, 50, 91, 46, 85, 10,20,56,92,42,42,42,42,42,70,10]
+
+    // Movable data
     const [lineColorOrg, setLineColorOrg] = useState('green');
-    const [dataSetOrg, setDataSetOrg] = useState([
-        [65, 59, 80, 81, 56, 55, 40],
-        [35, 39, 50, 91, 46, 85, 10],
-    ]);
-    console.log("Test dataset", dataSetOrg);
+    const [dataSetOrg, setDataSetOrg] = useState(
+        [...originalData],
+    );
+    const updateOrgData = (dataSet) => {
+        if (Array.isArray(dataSet)) {
+            console.log("Updating dataset");
+            setDataSetOrg(dataSet);
+        } else {
+            console.error('Error: updateOrgData was called with a non-array value');
+        }
+    }
+    useEffect(() => {
+        console.log("Data set org was updated")
+    }, [dataSetOrg]);
+
     const updateColorOrg = () => {  // Receive setLineColor as a prop
         axios.get('http://localhost:8765/getCol', {
             params: {
-                dataSet: JSON.stringify(dataSetOrg)  // Convert dataSet to a JSON string
+                dataSet: JSON.stringify(dataSetOrg),  // Convert dataSet to a JSON string
             }
         })
             .then((res) => {
@@ -24,7 +38,7 @@ export const ParentComponent = () => {
                     setLineColorOrg("green");
                 }
                 else {
-                    setLineColorOrg("red")
+                    setLineColorOrg("red");
                 }
 
             })
@@ -32,15 +46,19 @@ export const ParentComponent = () => {
                 console.error('Error:', error);
             });
     };
+    useEffect(() => {
+        console.log("WARNING WARNING! Dataset update!")
+    }, [dataSetOrg]);
     useEffect(() => { updateColorOrg(); }, [dataSetOrg]);
 
-    const [dataSetCF, setDataSetCF] = useState([
-        [65, 59, 80, 81, 56, 55, 40],
-        [35, 39, 50, 91, 46, 85, 10],
-    ]);
+    // Counterfactual data
+    const [dataSetCF, setDataSetCF] = useState(
+        [...dataSetOrg] // Replace with call to python script
+    )
     const [lineColorCF, setLineColorCF] = useState('green');
 
     const getCFData = () => {
+        console.log("CF get called");
         axios.get('http://localhost:8765/cf', {
             params: {
                 dataSet: JSON.stringify(dataSetOrg)  // Convert dataSet to a JSON string
@@ -48,15 +66,20 @@ export const ParentComponent = () => {
         })
             .then((res) => {
 
+                console.log("CF from python:", res.data);
+
                 // Display new counterfactual data
-                setDataSetCF(res.data);
+                setDataSetCF([...res.data]);
+
 
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
     };
-
+    useEffect(() => {
+        console.log("Updated dataSetOrg!");
+    }, [dataSetOrg]);
     useEffect(() => { getCFData(); }, [dataSetOrg]);
 
     const updateCFColor = () => {  // Receive setLineColor as a prop
@@ -80,15 +103,19 @@ export const ParentComponent = () => {
                 console.error('Error:', error);
             });
     };
-    useEffect(() => { updateCFColor() }, [dataSetOrg]);
+    useEffect(() => { updateCFColor() }, [dataSetCF]);
 
 
+    useEffect(
+        () => {
+            console.log("CF",dataSetCF);
+        }, [dataSetCF]
+    )
 
 
     return (
         <div>
-            <DraggableGraph dataSetOrg={dataSetOrg} setDataSet={setDataSetOrg} lineColor={lineColorOrg} setRandomColor={updateColorOrg} />
-            <DraggableGraph dataSetOrg={dataSetCF} setDataSet={setDataSetCF} lineColor={lineColorCF} setRandomColor={updateCFColor} />
+            <DraggableGraph dataSetOrg={dataSetOrg} updateOrgData={updateOrgData} dataSetCF={dataSetCF} />
         </div>
     );
 };

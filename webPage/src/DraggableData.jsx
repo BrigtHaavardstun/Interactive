@@ -2,43 +2,53 @@ import React from "react";
 import { Line } from "react-chartjs-2";
 import "chartjs-plugin-dragdata";
 
-const DraggableGraph = ({ dataSetOrg, setDataSet, lineColor, setRandomColor }) => {
-  console.log("PROPS:", dataSetOrg);
+
+
+
+const DraggableGraph = ({ dataSetOrg, updateOrgData, dataSetCF }) => {
+  //console.log("PROPS:", dataSetOrg);
+  const data_label = Array.from({length: dataSetOrg.length}, (_, i) => i);
 
 
   const state = {
-    dataSet: dataSetOrg,
-    labels: ["T1", "T2", "T3", "T4", "T5", "T6", "T7"],
+    dataSet: [dataSetOrg, dataSetCF],
+    labels: data_label,
     options: {
       tooltips: { enabled: true },
       scales: {
         xAxes: [
           {
-            gridLines: { display: false, color: "grey" },
-            ticks: { fontColor: "#3C3C3C", fontSize: 14 }
+            gridLines: { display: true, color: "grey" },
+            ticks: {
+              fontColor: "#3C3C3C",
+              fontSize: 14,
+              callback: function(value,index){
+                const step_size =  2
+                return index%step_size == 0 ? value : null;
+              }
+            }
           }
         ],
         yAxes: [
           {
             scaleLabel: {
               display: true,
-              labelString: "Effekt kW",
+              labelString: "Domain Spesific Y label",
               fontSize: 14
             },
             ticks: {
               display: true,
-              min: -5,
+              min: -100,
               max: 100,
-              scaleSteps: 50,
-              scaleStartValue: -50,
-              maxTicksLimit: 4,
+              stepSize: 20,
+              //maxTicksLimit: 4,
               fontColor: "#9B9B9B",
               padding: 30,
-              callback: point => (point < 0 ? "" : point)
+              callback: point => point
             },
             gridLines: {
-              display: false,
-              offsetGridLines: true,
+              display: true,
+              offsetGridLines: false,
               color: "3C3C3C",
               tickMarkLength: 4
             }
@@ -54,51 +64,55 @@ const DraggableGraph = ({ dataSetOrg, setDataSet, lineColor, setRandomColor }) =
       },
       dragDataRound: 1,
       onDragStart: function (e) {
-        console.log("Start:", e);
+        //console.log("Start:", e);
       },
       onDrag: function (e, datasetIndex, index, value) {
-        console.log("Drag:", datasetIndex, index, value);
+        //console.log("Drag:", datasetIndex, index, value);
       },
       onDragEnd: function (e, datasetIndex, index, value) {
-        console.log("Drag End:", state.dataSet);
-        const newDataSet = [...state.dataSet];
-        newDataSet[datasetIndex][index] = value;
-        console.log("DataSet:", newDataSet);
-        setDataSet(newDataSet);
-        setRandomColor();
+        //console.log("Drag End:", state.dataSet);
+        const newDataSet = state.dataSet[0];
+        newDataSet[index] = value;
+        console.log("DataSet:", dataSetOrg);
+        updateOrgData([...newDataSet]);
+        //console.log("new Dataset:", dataSetOrg);
 
       }.bind(this)
     }
   };
 
-  console.log("RENDER");
+  //console.log("RENDER");
   const data = {
     labels: state.labels,
     datasets: [
       {
-        label: "Metric 1",
+        label: "Orginal 1",
         data: state.dataSet[0],
-        lineTension: 0.4,
-        borderColor: "pink",
+        lineTension: 0,
+        borderColor: "rgba(255,0,100,0.5)",
         borderWidth: 5,
         pointRadius: 10,
         pointHoverRadius: 10,
-        pointBackgroundColor: lineColor,
+        pointBackgroundColor: "rgba(255,0,100,0.5)",
         pointBorderWidth: 0,
         spanGaps: false,
-        dragData: true
+        dragData: true,
+        fill: false
       },
       {
-        label: "Metric 2",
+        label: "Counterfactual 2",
         data: state.dataSet[1],
         lineTension: 0,
-        borderColor: "9B9B9B",
+        borderColor: "rgba(0,0,255,0.5)",
         borderWidth: 5,
         pointRadius: 10,
         pointHoverRadius: 10,
-        pointBackgroundColor: lineColor,
+        pointBackgroundColor: "rgba(0,0,255,0.5)",
         pointBorderWidth: 0,
-        spanGaps: false
+        spanGaps: false,
+        dragData: false,
+        fill: false
+
       }
     ]
   };
