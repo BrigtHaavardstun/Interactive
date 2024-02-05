@@ -4,41 +4,23 @@ import axios from 'axios';
 
 
 export const ParentComponent = () => {
-
-    // Original data TODO: Get this from python script
-    const originalData = [35, 39, 50, 91, 46, 85, 10,20,56,92,42,42,42,42,42,70,10]
-
-    // Movable data
-    const [lineColorOrg, setLineColorOrg] = useState('green');
-    const [dataSetOrg, setDataSetOrg] = useState(
-        [...originalData],
-    );
-    const updateOrgData = (dataSet) => {
-        if (Array.isArray(dataSet)) {
-            console.log("Updating dataset");
-            setDataSetOrg(dataSet);
-        } else {
-            console.error('Error: updateOrgData was called with a non-array value');
-        }
+    const color_class_map = {
+        1: "rgba(0,100,255,0.5)",
+        2: "rgba(217,2,250,0.5)"
     }
-    useEffect(() => {
-        console.log("Data set org was updated")
-    }, [dataSetOrg]);
-
-    const updateColorOrg = () => {  // Receive setLineColor as a prop
+    const updateColor = (dataSet,colorSet) => {
         axios.get('http://localhost:8765/getClass', {
             params: {
-                dataSet: JSON.stringify(dataSetOrg),  // Convert dataSet to a JSON string
+                dataSet: JSON.stringify(dataSet),  // Convert dataSet to a JSON string
             }
         })
             .then((res) => {
                 // Change the color based on the response
-
                 if (res.data == 1) {
-                    setLineColorOrg("rgba(0,0,255,0.5)");
+                    colorSet(color_class_map[1]);
                 }
                 else if(res.data == 2) {
-                    setLineColorOrg("rgba(255,0,0,0.5)");
+                    colorSet(color_class_map[2]);
                 } else {
                     throw Error("Not a valid class!");
                 }
@@ -49,19 +31,57 @@ export const ParentComponent = () => {
             });
     };
 
-    useEffect(() => { updateColorOrg(); }, [dataSetOrg]);
+     const updateData = (dataSet, setData) => {
+        if (Array.isArray(dataSet)) {
+            setData([...dataSet]);
+        } else {
+            console.error('Error: updateData was called with a non-array value');
+        }
+    }
+
+    // To recall the orginal data
+     const [lineColorOrg, setLineColorOrg] = useState(
+        "rgba(159,159,171,0.25)"
+    )
+    const [dataSetOriginal, setDataSetOriginal] = useState(
+        [0,0] // Replace with python call
+    )
+    const getOrgData = () => {
+        axios.get('http://localhost:8765/getTS')
+            .then((res) => {
+
+                setDataSetOriginal(res.data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    };
+
+    useEffect(() => {
+        getOrgData();
+    }, []);
+
+
+
+
+
+    // Movable data
+    const [dataSetCurr, setDataSetCurr] = useState([...dataSetOriginal]);
+    const [lineColorCurr, setLineColorCurr] = useState('green');
+    useEffect(() => { updateColor(dataSetCurr,setLineColorCurr); }, [dataSetCurr]);
+    useEffect(() => {
+        updateData(dataSetOriginal, setDataSetCurr)
+    }, [dataSetOriginal]);
 
     // Counterfactual data
-    const [dataSetCF, setDataSetCF] = useState(
-        [...dataSetOrg] // Replace with call to python script
-    )
+    const [dataSetCF, setDataSetCF] = useState([...dataSetCurr])
     const [lineColorCF, setLineColorCF] = useState('green');
 
     const getCFData = () => {
         console.log("CF get called");
         axios.get('http://localhost:8765/cf', {
             params: {
-                dataSet: JSON.stringify(dataSetOrg),// Convert dataSet to a JSON string
+                dataSet: JSON.stringify(dataSetCurr),// Convert dataSet to a JSON string
                 targetClass: 1 // The class we want to have a counterfactual of
             }
         })
@@ -78,47 +98,18 @@ export const ParentComponent = () => {
                 console.error('Error:', error);
             });
     };
-    useEffect(() => {
-        console.log("Updated dataSetOrg!");
-    }, [dataSetOrg]);
-    useEffect(() => { getCFData(); }, [dataSetOrg]);
-
-    const updateCFColor = () => {  // Receive setLineColor as a prop
-        axios.get('http://localhost:8765/getClass', {
-            params: {
-                dataSet: JSON.stringify(dataSetCF)  // Convert dataSet to a JSON string
-            }
-        })
-            .then((res) => {
-                // Change the color based on the response
-
-                if (res.data == 1) {
-                    setLineColorCF("rgba(0,0,255,0.5)");
-                }
-                else if(res.data==2) {
-                    setLineColorCF("rgba(255,0,0,0.5)");
-                }else {
-                    throw Error("Not a valid class!");
-                }
-
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    };
-    useEffect(() => { updateCFColor() }, [dataSetCF]);
+    useEffect(() => { getCFData(); }, [dataSetCurr]);
+    useEffect(() => { updateColor(dataSetCF, setLineColorCF) }, [dataSetCF]);
 
 
-    useEffect(
-        () => {
-            console.log("CF",dataSetCF);
-        }, [dataSetCF]
-    )
 
-
+    const reset = () => {
+        updateData(dataSetOriginal, setDataSetCurr)
+    }
     return (
         <div>
-            <DraggableGraph dataSetOrg={dataSetOrg} updateOrgData={updateOrgData} dataSetCF={dataSetCF} lineColorOrg={lineColorOrg} lineColorCF={lineColorCF} />
+            <DraggableGraph  dataSetCurrent={dataSetCurr} setDataCurrent={setDataSetCurr} dataSetOriginal={dataSetOriginal} updateData={updateData} dataSetCF={dataSetCF} lineColorCurr={lineColorCurr} lineColorOrg={lineColorOrg}lineColorCF={lineColorCF} />
+            <button style={{ fontSize: '20px', padding: '10px 20px' }}  onClick={reset}>Reset to orginal</button>
         </div>
     );
 };

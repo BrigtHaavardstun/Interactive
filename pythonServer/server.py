@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json
-
+import random
 
 from classifyTimeSeries import _classify
 from generateCF import generate_cf
@@ -25,14 +25,16 @@ def get_class():
         return "No 'ys' parameter provided.", 400  # Bad request
 
 
-@app.route('/', methods=['GET'])
+@app.route('/getTS', methods=['GET'])
 def get_ys():
-    ys = request.args.get('ys')  # Get the 'ys' parameter value
-    if ys is not None:
-        ys = json.loads(ys)  # Parse 'ys' as JSON
-        return jsonify(ys), 200  # Return 'ys' as a JSON response
-    else:
-        return "No 'ys' parameter provided.", 400  # Bad request
+    max_val = 100
+    min_val = -100
+    length = 10
+    try:
+        time_series = [random.randint(min_val, max_val) for _ in range(length)]
+        return jsonify(time_series), 200  # Return 'ys' as a JSON response
+    except Exception as e:
+        return jsonify({'error': e}), 400
 
 
 
@@ -43,21 +45,20 @@ def get_cf():
     we want to find a counterfactual of the index item to make it positive
     @return A counterfactual time series. For now we only change one time series
     """
-    #return jsonify([10]*10), 200
     try:
         ds = request.args.get('dataSet')  # List of time series
-        target = request.args.get('targetClass')
         ds = json.loads(ds)
-        print(ds)
-        print("Type:",type(ds[0]))
+
+        target = request.args.get('targetClass')
+        target = json.loads(target)
 
 
-        # index = request.get("index")
+
         if ds is None:  # or index is None:
             return "You have to provide a 'dataSet' parameter and a 'index' parameter.", 400
         else:
-            print(_classify(ds),target)
-            if _classify(ds)==int(target):
+            if _classify(ds)==target:
+                print("Target IS same")
                 return jsonify(ds), 200
 
             cf = generate_cf(ds)

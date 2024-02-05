@@ -5,13 +5,10 @@ import "chartjs-plugin-dragdata";
 
 
 
-const DraggableGraph = ({ dataSetOrg, updateOrgData, dataSetCF, lineColorOrg,lineColorCF}) => {
-  //console.log("PROPS:", dataSetOrg);
-  const data_label = Array.from({length: dataSetOrg.length}, (_, i) => i);
-
-
+const DraggableGraph = ({ dataSetCurrent,setDataCurrent, dataSetCF,dataSetOriginal,updateData, lineColorCurr,lineColorCF, lineColorOrg}) => {
+  const data_label = Array.from({length: dataSetOriginal.length}, (_, i) => i);
   const state = {
-    dataSet: [dataSetOrg, dataSetCF],
+    dataSet: [ dataSetCurrent, dataSetCF,dataSetOriginal],
     labels: data_label,
     options: {
       tooltips: { enabled: true },
@@ -73,9 +70,7 @@ const DraggableGraph = ({ dataSetOrg, updateOrgData, dataSetCF, lineColorOrg,lin
         //console.log("Drag End:", state.dataSet);
         const newDataSet = state.dataSet[0];
         newDataSet[index] = value;
-        console.log("DataSet:", dataSetOrg);
-        updateOrgData([...newDataSet]);
-        //console.log("new Dataset:", dataSetOrg);
+        updateData([...newDataSet], setDataCurrent);
 
       }.bind(this)
     }
@@ -85,29 +80,46 @@ const DraggableGraph = ({ dataSetOrg, updateOrgData, dataSetCF, lineColorOrg,lin
   const data = {
     labels: state.labels,
     datasets: [
-      {
+        {
         label: "Current",
         data: state.dataSet[0],
         lineTension: 0,
-        borderColor: lineColorOrg,
+        borderColor: lineColorCurr,
         borderWidth: 5,
-        pointRadius: 10,
-        pointHoverRadius: 10,
-        pointBackgroundColor: lineColorOrg,
+        pointRadius: 7,
+        pointHoverRadius: 18,
+        pointBackgroundColor:  lineColorCurr,
         pointBorderWidth: 0,
         spanGaps: false,
         dragData: true,
         fill: false
       },
+
+
       {
-        label: "Counterfactual 2",
+        label: "Counterfactual",
         data: state.dataSet[1],
         lineTension: 0,
-        borderColor: "rgba(0,0,255,0.5)",
+        borderColor: lineColorCF,
         borderWidth: 5,
-        pointRadius: 10,
-        pointHoverRadius: 10,
-        pointBackgroundColor: "rgba(0,0,255,0.5)",
+        pointRadius: 1,
+        pointHoverRadius: 1,
+        pointBackgroundColor: lineColorCF,
+        pointBorderWidth: 0,
+        spanGaps: false,
+        dragData: false,
+        fill: false
+
+      },
+        {
+        label: "Original",
+        data: state.dataSet[2],
+        lineTension: 0,
+        borderColor: lineColorOrg,
+        borderWidth: 5,
+        pointRadius: 1,
+        pointHoverRadius: 1,
+        pointBackgroundColor:  lineColorOrg,
         pointBorderWidth: 0,
         spanGaps: false,
         dragData: false,
