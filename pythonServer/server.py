@@ -2,24 +2,38 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json
 import random
+import numpy as np
 
 from classifyTimeSeries import _classify
 from generateCF import generate_cf
+from getTimeSeries import get_time_series
 app = Flask(__name__)
 CORS(app)  # This will enable CORS for all routes
 
+dataSet ="ItalyPowerDemand"
 
 @app.route('/getClass', methods=['GET'])
 def get_class():
-    ds = request.args.get('dataSet')  # Get the 'ys' parameter value
-    if ds is not None:
-        ds = json.loads(ds)  # Parse 'ys' as JSON
-        ds = [float(y) for y in ds]
+    global dataSet
+
+    timeSeries = request.args.get('timeSeries')  # Get the 'ys' parameter value
+    if timeSeries is not None:
+        timeSeries = json.loads(timeSeries)  # Parse 'ys' as JSON
+        timeSeries = [float(y) for y in timeSeries]
+        timeSeries = np.array(timeSeries)
+
+        if len(timeSeries) <= 10:
+            return "Too few data", 400
         try:
-            return_val = jsonify(_classify(ds)), 200
-            print(_classify(ds))
+            class_of_ts = str(_classify(timeSeries,dataSet))
+            print("Class:",class_of_ts)
+            return_val = jsonify(class_of_ts), 200
+            print("Classification:", return_val)
+            return return_val
+
         except Exception as e:
-            return_val = e, 400
+            print(e)
+            return e, 400
 
         return return_val
     else:
@@ -27,13 +41,10 @@ def get_class():
 
 
 @app.route('/getTS', methods=['GET'])
-def get_ys():
-    max_val = 100
-    min_val = -100
-    length = 10
+def get_ts():
     try:
-        time_series = [random.randint(min_val, max_val) for _ in range(length)]
-        return jsonify(time_series), 200  # Return 'ys' as a JSON response
+        time_series = get_time_series(dataSet,10)
+        return jsonify(time_series.flatten().tolist()), 200 # Convert from numpy to array
     except Exception as e:
         return jsonify({'error': e}), 400
 
@@ -42,29 +53,27 @@ def get_ys():
 
 @app.route('/cf', methods=['GET'])
 def get_cf():
+    global dataSet
+
     """
     we want to find a counterfactual of the index item to make it positive
     @return A counterfactual time series. For now we only change one time series
     """
     try:
-        ds = request.args.get('dataSet')  # List of time series
-        ds = json.loads(ds)
-
-        target = request.args.get('targetClass')
-        target = json.loads(target)
+        ts = request.args.get('timeSeries')  # List of time series
+        ts = json.loads(ts)
+        ts = np.asarray(ts)
 
 
 
-        if ds is None:  # or index is None:
+
+
+        if ts is None:  # or index is None:
             return "You have to provide a 'dataSet' parameter and a 'index' parameter.", 400
         else:
-            if _classify(ds)==target:
-                print("Target IS same")
-                return jsonify(ds), 200
 
-            cf = generate_cf(ds)
-
-            return jsonify(cf), 200
+            cf = generate_cf(ts,dataSet)
+            return jsonify(cf.tolist()), 200
 
     except Exception as e:
         print("We got an error", e)
