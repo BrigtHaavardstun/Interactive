@@ -16,7 +16,7 @@ from Blackbox_classifier_FCN.functionBased.FCN_model import Classifier_FCN
 def load_model(dataset):
     model = keras.models.load_model('Blackbox_classifier_FCN/' + str(dataset) + '_best_model.hdf5')
     return model
-def train_model(dataset,verbose=False):
+def train_model(dataset,epochs=500,verbose=True):
     X_train, y_train, X_test, y_test = ucr_data_loader(str(dataset))
     y_train, y_test = label_encoder(y_train, y_test)
 
@@ -26,7 +26,7 @@ def train_model(dataset,verbose=False):
     dataset_name = str(dataset)
 
     fcn = Classifier_FCN(output_directory=os.getcwd(), input_shape=input_shape, nb_classes=nb_classes,
-                         dataset_name=dataset_name, verbose=verbose)
+                         dataset_name=dataset_name, verbose=verbose,epochs=epochs)
     fcn.build_model(input_shape=input_shape, nb_classes=nb_classes)
     fcn.fit(X_train, to_categorical(y_train))
     fcn.predict(X_test)

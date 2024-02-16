@@ -10,13 +10,14 @@ from getTimeSeries import get_time_series
 app = Flask(__name__)
 CORS(app)  # This will enable CORS for all routes
 
-dataSet ="ItalyPowerDemand"
+dataSet ="GunPoint"
 
 @app.route('/getClass', methods=['GET'])
 def get_class():
     global dataSet
 
     timeSeries = request.args.get('timeSeries')  # Get the 'ys' parameter value
+    dataSet = request.args.get('dataSet')
     if timeSeries is not None:
         timeSeries = json.loads(timeSeries)  # Parse 'ys' as JSON
         timeSeries = [float(y) for y in timeSeries]
@@ -43,7 +44,9 @@ def get_class():
 @app.route('/getTS', methods=['GET'])
 def get_ts():
     try:
-        time_series = get_time_series(dataSet,10)
+        dataSet = request.args.get('dataSet')
+        index = int(request.args.get('index'))
+        time_series = get_time_series(dataSet,index)
         return jsonify(time_series.flatten().tolist()), 200 # Convert from numpy to array
     except Exception as e:
         return jsonify({'error': e}), 400
@@ -53,7 +56,6 @@ def get_ts():
 
 @app.route('/cf', methods=['GET'])
 def get_cf():
-    global dataSet
 
     """
     we want to find a counterfactual of the index item to make it positive
@@ -61,6 +63,7 @@ def get_cf():
     """
     try:
         ts = request.args.get('timeSeries')  # List of time series
+        dataSet = request.args.get('dataSet')
         ts = json.loads(ts)
         ts = np.asarray(ts)
 

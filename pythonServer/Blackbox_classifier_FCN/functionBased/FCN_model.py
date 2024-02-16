@@ -7,9 +7,10 @@ import numpy as np
 
 class Classifier_FCN:
 
-    def __init__(self, output_directory, input_shape, nb_classes, dataset_name, verbose=False, build=True):
+    def __init__(self, output_directory, input_shape, nb_classes, dataset_name,epochs=500, verbose=False, build=True):
         self.output_directory = output_directory
         self.dataset_name = dataset_name
+        self.epochs = epochs
         if build == True:
             self.model = self.build_model(input_shape, nb_classes)
             if (verbose == True):
@@ -57,7 +58,7 @@ class Classifier_FCN:
     def fit(self, x_train, y_train):
 
         batch_size = 16
-        nb_epochs = 50 # 2000
+        nb_epochs = self.epochs # 2000
 
 
         mini_batch_size = int(min(x_train.shape[0] / 10, batch_size))

@@ -85,9 +85,11 @@ def findSubarray(a, k):  # used to find the maximum contigious subarray of lengt
 
 
 def load_weights(dataset):
-    train_weights = np.load('Class_Activation_Mapping/' + str(dataset) + '_cam_train_weights.npy')
+    training_weights = np.load('Class_Activation_Mapping/' + str(dataset) + '_cam_train_weights.npy')
     test_weights = np.load('Class_Activation_Mapping/' + str(dataset) + '_cam_test_weights.npy')
-    return train_weights, test_weights
+    joint_weights = np.load('Class_Activation_Mapping/' + str(dataset) + '_cam_joint_weights.npy')
+
+    return training_weights,test_weights,joint_weights
 
 
 
@@ -96,7 +98,7 @@ def load_weights(dataset):
 def counterfactual_generator_swap(instance, nun_idx, subarray_length,dataset):
     X_train, y_train, X_test, y_test = ucr_data_loader(dataset)
     y_train,y_test = label_encoder(y_train,y_test)
-    training_weights, testing_weights = load_weights(dataset)
+    _, _, joint_weights = load_weights(dataset)
 
     model = load_model(dataset)
 
@@ -108,9 +110,9 @@ def counterfactual_generator_swap(instance, nun_idx, subarray_length,dataset):
     print("Prob_MAX",prob_max)
 
 
-    most_influencial_array = findSubarray((training_weights[nun_idx]), subarray_length)
+    most_influencial_array = findSubarray((joint_weights[nun_idx]), subarray_length)
 
-    starting_point = np.where(training_weights[nun_idx] == most_influencial_array[0])[0][0]
+    starting_point = np.where(joint_weights[nun_idx] == most_influencial_array[0])[0][0]
 
     X_example = np.concatenate((instance.flatten()[:starting_point],
                                 (X_train[nun_idx].flatten()[starting_point:subarray_length + starting_point]),
@@ -118,12 +120,12 @@ def counterfactual_generator_swap(instance, nun_idx, subarray_length,dataset):
 
     prob_target = model.predict(X_example.reshape(1, -1, 1))[0][y_target]
 
-    prob_goal = 0.5 # How far over the line do we want to go?
+    prob_goal = 0.75 # How far over the line do we want to go?
     while prob_target <= min(prob_goal,prob_max):
         subarray_length += 1
 
-        most_influencial_array = findSubarray((training_weights[nun_idx]), subarray_length)
-        starting_point = np.where(training_weights[nun_idx] == most_influencial_array[0])[0][0]
+        most_influencial_array = findSubarray((joint_weights[nun_idx]), subarray_length)
+        starting_point = np.where(joint_weights[nun_idx] == most_influencial_array[0])[0][0]
         X_example = np.concatenate((instance.flatten()[:starting_point],
                                     (X_train[nun_idx].flatten()[starting_point:subarray_length + starting_point]),
                                     instance.flatten()[subarray_length + starting_point:]))
