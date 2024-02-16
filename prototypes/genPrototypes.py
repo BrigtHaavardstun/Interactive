@@ -45,37 +45,38 @@ def load_model(dataset):
     model = keras.models.load_model('../pythonServer/Blackbox_classifier_FCN/' + str(dataset) + '_best_model.hdf5')
     return model
 
-def get_clusters(x_train):
+def get_clusters(x_data):
     seed = 42
-    kmedoids = KMedoids(n_clusters=3, random_state=seed)
-    kmedoids.fit(x_train)
+    kmedoids = KMedoids(n_clusters=2, random_state=seed)
+    kmedoids.fit(x_data)
     return kmedoids.cluster_centers_
 
-def get_index_in_train(cluster,x_train):
-    for i,entry in enumerate(x_train):
+def get_index_in_train(cluster,x_data):
+    for i,entry in enumerate(x_data):
         if np.array_equal(entry.flatten(), cluster.flatten()):
             return i
-    raise Exception ("could find match for", cluster, "in x_train")
+    raise Exception ("could find match for", cluster, "in x_data")
 
-def generate_prototypes():
-    dataset = "ItalyPowerDemand"
+def generate_prototypes(dataset):
     seed = 42
 
-    X_train, X_test, y_train, y_test = UCR_UEA_datasets().load_dataset(dataset)
+    X_train, y_train, X_test, y_test = UCR_UEA_datasets().load_dataset(dataset)
+    X_joint = np.concatenate([X_train, X_test])
+    print("Lengths:",len(X_train), len(X_test), len(y_train), len(y_test))
     ai_model = load_model(dataset)
-    y_pred = ai_model.predict(X_train)
+    y_pred = ai_model.predict(X_joint)
     y_pred = [np.argmax(y) for y in y_pred]
     print(y_pred)
-    cz_x_train = [X_train[i].flatten() for i in range(len(X_train)) if y_pred[i] == 0]  # Class zero x train
-    co_x_train = [X_train[i].flatten() for i in range(len(X_train)) if y_pred[i] == 1]  # Class one x train
+    cz_x_joint = [X_joint[i].flatten() for i in range(len(X_joint)) if y_pred[i] == 0]  # Class zero x train
+    co_x_joint = [X_joint[i].flatten() for i in range(len(X_joint)) if y_pred[i] == 1]  # Class one x train
 
 
-    medoids_zero = get_clusters(cz_x_train)
-    medoids_one = get_clusters(co_x_train)
+    medoids_zero = get_clusters(cz_x_joint)
+    medoids_one = get_clusters(co_x_joint)
 
-    idx_cz = [get_index_in_train(mediod, X_train) for mediod in medoids_zero]
+    idx_cz = [get_index_in_train(mediod, X_joint) for mediod in medoids_zero]
     print("prototypes zero",idx_cz)
-    idx_co = [get_index_in_train(mediod, X_train) for mediod in medoids_one]
+    idx_co = [get_index_in_train(mediod, X_joint) for mediod in medoids_one]
     print("prototypes one", idx_co)
 
 
@@ -90,6 +91,8 @@ def generate_prototypes():
 
 
 if __name__ == "__main__":
-    generate_prototypes()
+    datasets = ["GunPoint", "ItalyPowerDemand"]
+    for dataset in datasets:
+        generate_prototypes(dataset)
 
 

@@ -4,6 +4,7 @@ import axios from 'axios';
 
 
 export const ParentComponent = () => {
+    const dataSetName = "ItalyPowerDemand"
     const color_class_map = {
         "0": "rgba(0,100,255,0.5)",
         "1": "rgba(217,2,250,0.5)"
@@ -11,7 +12,8 @@ export const ParentComponent = () => {
     const updateColor = (dataSet,colorSet) => {
         axios.get('http://localhost:8765/getClass', {
             params: {
-                timeSeries: JSON.stringify(dataSet),  // Convert dataSet to a JSON string
+                timeSeries: JSON.stringify(dataSet),
+                dataSet:dataSetName,// Convert dataSet to a JSON string
             }
         })
             .then((res) => {
@@ -41,7 +43,12 @@ export const ParentComponent = () => {
         [0,0] // Replace with python call
     )
     const getOrgData = () => {
-        axios.get('http://localhost:8765/getTS')
+        axios.get('http://localhost:8765/getTS',{
+            params: {
+                dataSet: dataSetName,
+                index: 32,//73=0 171=1// Convert dataSet to a JSON string
+            }
+        })
             .then((res) => {
                 console.log(res.data);
                 setDataSetOriginal(res.data);
@@ -76,7 +83,7 @@ export const ParentComponent = () => {
         axios.get('http://localhost:8765/cf', {
             params: {
                 timeSeries: JSON.stringify(dataSetCurr),// Convert dataSet to a JSON string
-                targetClass: 1 // The class we want to have a counterfactual of
+                dataSet: dataSetName
             }
         })
             .then((res) => {

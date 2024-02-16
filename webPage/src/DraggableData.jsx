@@ -15,7 +15,7 @@ const DraggableGraph = ({ dataSetCurrent,setDataCurrent, dataSetCF,dataSetOrigin
       scales: {
         xAxes: [
           {
-            gridLines: { display: true, color: "grey" },
+            gridLines: { display: false, color: "grey" },
             ticks: {
               fontColor: "#3C3C3C",
               fontSize: 14,
@@ -37,11 +37,14 @@ const DraggableGraph = ({ dataSetCurrent,setDataCurrent, dataSetCF,dataSetOrigin
               display: true,
               min: -2,
               max: 2.5,
-              stepSize: 0.1,
+              stepSize: 0.01,
               //maxTicksLimit: 4,
               fontColor: "#9B9B9B",
               padding: 30,
-              callback: point => point
+              callback: function(value,index){
+                const step_size =  10
+                return index%step_size == 0 ? value : null;
+              }
             },
             gridLines: {
               display: true,
