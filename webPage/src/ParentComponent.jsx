@@ -5,25 +5,19 @@ import axios from 'axios';
 
 export const ParentComponent = () => {
     const color_class_map = {
-        1: "rgba(0,100,255,0.5)",
-        2: "rgba(217,2,250,0.5)"
+        "0": "rgba(0,100,255,0.5)",
+        "1": "rgba(217,2,250,0.5)"
     }
     const updateColor = (dataSet,colorSet) => {
         axios.get('http://localhost:8765/getClass', {
             params: {
-                dataSet: JSON.stringify(dataSet),  // Convert dataSet to a JSON string
+                timeSeries: JSON.stringify(dataSet),  // Convert dataSet to a JSON string
             }
         })
             .then((res) => {
                 // Change the color based on the response
-                if (res.data == 1) {
-                    colorSet(color_class_map[1]);
-                }
-                else if(res.data == 2) {
-                    colorSet(color_class_map[2]);
-                } else {
-                    throw Error("Not a valid class!");
-                }
+                colorSet(color_class_map[res.data]);
+
 
             })
             .catch((error) => {
@@ -49,7 +43,7 @@ export const ParentComponent = () => {
     const getOrgData = () => {
         axios.get('http://localhost:8765/getTS')
             .then((res) => {
-
+                console.log(res.data);
                 setDataSetOriginal(res.data);
             })
             .catch((error) => {
@@ -81,7 +75,7 @@ export const ParentComponent = () => {
         console.log("CF get called");
         axios.get('http://localhost:8765/cf', {
             params: {
-                dataSet: JSON.stringify(dataSetCurr),// Convert dataSet to a JSON string
+                timeSeries: JSON.stringify(dataSetCurr),// Convert dataSet to a JSON string
                 targetClass: 1 // The class we want to have a counterfactual of
             }
         })

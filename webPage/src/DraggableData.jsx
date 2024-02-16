@@ -35,9 +35,9 @@ const DraggableGraph = ({ dataSetCurrent,setDataCurrent, dataSetCF,dataSetOrigin
             },
             ticks: {
               display: true,
-              min: -100,
-              max: 100,
-              stepSize: 20,
+              min: -2,
+              max: 2.5,
+              stepSize: 0.1,
               //maxTicksLimit: 4,
               fontColor: "#9B9B9B",
               padding: 30,
