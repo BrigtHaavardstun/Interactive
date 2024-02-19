@@ -7,14 +7,33 @@ import numpy as np
 from classifyTimeSeries import _classify
 from generateCF import generate_cf
 from getTimeSeries import get_time_series
+from getConfidence import get_confidence
+
 app = Flask(__name__)
 CORS(app)  # This will enable CORS for all routes
 
-dataSet ="GunPoint"
+dataSet = "GunPoint"
+
+
+@app.route('/confidence', methods=['GET'])
+def confidence():
+    try:
+        time_series = request.args.get('timeSeries')  # Get the 'ys' parameter value
+        data_set = request.args.get('dataSet')
+
+        time_series = json.loads(time_series)  # Parse 'ys' as JSON
+        time_series = [float(y) for y in time_series]
+        time_series = np.array(time_series)
+
+        model_confidence = get_confidence(time_series, data_set)
+        return jsonify(model_confidence.item()), 200
+    except Exception as e:
+        print("COFIDENCE EROOR",e)
+        return jsonify(e), 400
+
 
 @app.route('/getClass', methods=['GET'])
 def get_class():
-    global dataSet
 
     timeSeries = request.args.get('timeSeries')  # Get the 'ys' parameter value
     dataSet = request.args.get('dataSet')
