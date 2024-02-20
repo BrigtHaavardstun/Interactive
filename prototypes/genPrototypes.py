@@ -89,6 +89,11 @@ def generate_prototypes(dataset):
     showPlot(data_dict_zero)
     showPlot(data_dict_one_dw)
 
+    url = "http://localhost:3000?domain=" + str(dataset) + "&instance="
+    for i, test_instance in enumerate(idx_cz):
+        print(f"{i}:", url + str(test_instance))
+    for i, test_instance in enumerate(idx_co):
+        print(f"{i}:", url + str(test_instance))
 
 if __name__ == "__main__":
     datasets = ["GunPoint", "ItalyPowerDemand"]
