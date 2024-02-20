@@ -37,7 +37,7 @@ def generate_test_instance(train_examples,dataset):
 
         with open("CorrectAnswer.json", "w") as f:
             ans_dict = {idx.item():ans for idx,ans in zip(X_test_instances,correct_ans_list)}
-            f.write(json.dumps(ans_dict))
+            f.write(json.dumps(ans_dict,indent=2))
 
         url = "http://localhost:3000?domain=" + str(dataset) + "&instance="
         for i,test_instance in enumerate(X_test_instances):
