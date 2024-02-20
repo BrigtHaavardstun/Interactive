@@ -4,7 +4,7 @@ import axios from 'axios';
 import BasicExample from "./MyProgressBar";
 
 
-export const ParentComponent = () => {
+export const TrainSetting = () => {
     const queryParameters = new URLSearchParams(window.location.search)
     const dataSetName = queryParameters.get("domain")
     const instance = queryParameters.get("instance")
@@ -137,10 +137,14 @@ export const ParentComponent = () => {
 
     return (
         <div>
-            <h2> Probability of class 1</h2>
             <BasicExample currValue={confidence}/>
-            <DraggableGraph  dataSetCurrent={dataSetCurr} setDataCurrent={setDataSetCurr} dataSetOriginal={dataSetOriginal} updateData={updateData} dataSetCF={dataSetCF} lineColorCurr={lineColorCurr} lineColorOrg={lineColorOrg}lineColorCF={lineColorCF} />
-            <button style={{ fontSize: '20px', padding: '10px 20px' }}  onClick={reset}>Reset to orginal</button>
+            <DraggableGraph dataSetCurrent={dataSetCurr} setDataCurrent={setDataSetCurr}
+                            dataSetOriginal={dataSetOriginal} updateData={updateData} dataSetCF={dataSetCF}
+                            lineColorCurr={lineColorCurr} lineColorOrg={lineColorOrg} lineColorCF={lineColorCF}/>
+            <button className={"button"} onClick={reset}>Reset to
+                orginal
+            </button>
+
         </div>
     );
 };

@@ -47,7 +47,7 @@ def load_model(dataset):
 
 def get_clusters(x_data):
     seed = 42
-    kmedoids = KMedoids(n_clusters=2, random_state=seed)
+    kmedoids = KMedoids(n_clusters=3, random_state=seed)
     kmedoids.fit(x_data)
     return kmedoids.cluster_centers_
 
@@ -89,6 +89,11 @@ def generate_prototypes(dataset):
     showPlot(data_dict_zero)
     showPlot(data_dict_one_dw)
 
+    url = "http://localhost:3000?domain=" + str(dataset) + "&instance="
+    for i, test_instance in enumerate(idx_cz):
+        print(f"{i}:", url + str(test_instance))
+    for i, test_instance in enumerate(idx_co):
+        print(f"{i}:", url + str(test_instance))
 
 if __name__ == "__main__":
     datasets = ["GunPoint", "ItalyPowerDemand"]
