@@ -5,10 +5,11 @@ import "chartjs-plugin-dragdata";
 
 
 
-const DraggableGraph = ({ dataSetCurrent,setDataCurrent, dataSetCF,dataSetOriginal,updateData, lineColorCurr,lineColorCF, lineColorOrg}) => {
+const DraggableGraph = ({ dataSetOriginal}) => {
+  console.log(dataSetOriginal)
   const data_label = Array.from({length: dataSetOriginal.length}, (_, i) => i);
   const state = {
-    dataSet: [ dataSetCurrent, dataSetCF,dataSetOriginal],
+    dataSet: [dataSetOriginal],
     labels: data_label,
     options: {
       tooltips: { enabled: true },
@@ -85,46 +86,15 @@ const DraggableGraph = ({ dataSetCurrent,setDataCurrent, dataSetCF,dataSetOrigin
     labels: state.labels,
     datasets: [
         {
-        label: "Current",
+        label: "Original",
         data: state.dataSet[0],
         lineTension: 0,
-        borderColor: lineColorCurr,
-        borderWidth: 5,
-        pointRadius: 7,
-        pointHoverRadius: 18,
-        pointBackgroundColor:  lineColorCurr,
-        pointBorderWidth: 0,
-        spanGaps: false,
-        dragData: true,
-        fill: false
-      },
-
-
-      {
-        label: "Counterfactual",
-        data: state.dataSet[1],
-        lineTension: 0,
-        borderColor: lineColorCF,
+        borderColor: "rgba(159,159,171,0.25)",
         borderWidth: 5,
         pointRadius: 1,
         pointHoverRadius: 1,
-        pointBackgroundColor: lineColorCF,
-        pointBorderWidth: 0,
-        spanGaps: false,
-        dragData: false,
-        fill: false
-
-      },
-        {
-        label: "Original",
-        data: state.dataSet[2],
-        lineTension: 0,
-        borderColor: lineColorOrg,
-        borderWidth: 5,
-        pointRadius: 1,
-        pointHoverRadius: 1,
-        pointBackgroundColor:  lineColorOrg,
-        pointBorderWidth: 0,
+        pointBackgroundColor:  "rgba(159,159,171,0.25)",
+        pointBorderWidth: 1,
         spanGaps: false,
         dragData: false,
         fill: false

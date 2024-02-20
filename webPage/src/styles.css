@@ -1,4 +1,33 @@
 .App {
-  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  width: 95vw;
+}
+
+.header {
   text-align: center;
+  margin-top: 70px;
+}
+
+.TestData {
+  align-items: center;
+  width: 85%;
+  text-align: center;
+}
+
+.TrainData {
+  align-items: center;
+  width: 84%;
+  hight: 30%;
+  text-align: center;
+
+}
+
+.button{
+  width: 90%;
+  margin-left: 80px;
+
 }
