@@ -1,6 +1,6 @@
-0: http://localhost:3000?domain=DistalPhalanxOutlineCorrect&mode=train&instance=597
-1: http://localhost:3000?domain=DistalPhalanxOutlineCorrect&mode=train&instance=210
-2: http://localhost:3000?domain=DistalPhalanxOutlineCorrect&mode=train&instance=383
-3: http://localhost:3000?domain=DistalPhalanxOutlineCorrect&mode=train&instance=144
-4: http://localhost:3000?domain=DistalPhalanxOutlineCorrect&mode=train&instance=289
-5: http://localhost:3000?domain=DistalPhalanxOutlineCorrect&mode=train&instance=498
+0: http://localhost:3000?domain=DistalPhalanxOutlineCorrect&cf_mode=artificial&mode=train&instance=339
+1: http://localhost:3000?domain=DistalPhalanxOutlineCorrect&cf_mode=artificial&mode=train&instance=209
+2: http://localhost:3000?domain=DistalPhalanxOutlineCorrect&cf_mode=artificial&mode=train&instance=827
+3: http://localhost:3000?domain=DistalPhalanxOutlineCorrect&cf_mode=artificial&mode=train&instance=144
+4: http://localhost:3000?domain=DistalPhalanxOutlineCorrect&cf_mode=artificial&mode=train&instance=145
+5: http://localhost:3000?domain=DistalPhalanxOutlineCorrect&cf_mode=artificial&mode=train&instance=294

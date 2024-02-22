@@ -1,6 +1,6 @@
-0: http://localhost:3000?domain=ArrowHead&mode=train&instance=13
-1: http://localhost:3000?domain=ArrowHead&mode=train&instance=58
-2: http://localhost:3000?domain=ArrowHead&mode=train&instance=97
-3: http://localhost:3000?domain=ArrowHead&mode=train&instance=139
-4: http://localhost:3000?domain=ArrowHead&mode=train&instance=42
-5: http://localhost:3000?domain=ArrowHead&mode=train&instance=156
+0: http://localhost:3000?domain=ArrowHead&cf_mode=artificial&mode=train&instance=4
+1: http://localhost:3000?domain=ArrowHead&cf_mode=artificial&mode=train&instance=98
+2: http://localhost:3000?domain=ArrowHead&cf_mode=artificial&mode=train&instance=51
+3: http://localhost:3000?domain=ArrowHead&cf_mode=artificial&mode=train&instance=128
+4: http://localhost:3000?domain=ArrowHead&cf_mode=artificial&mode=train&instance=58
+5: http://localhost:3000?domain=ArrowHead&cf_mode=artificial&mode=train&instance=139

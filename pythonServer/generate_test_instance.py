@@ -4,6 +4,7 @@ import numpy as np
 from tslearn.datasets import UCR_UEA_datasets
 from tensorflow import keras
 import random
+from utils.load_data import load_dataset
 
 
 def load_model(dataset):
@@ -12,7 +13,7 @@ def load_model(dataset):
 
 
 def generate_test_instance(train_examples,dataset):
-        X_train, y_train, X_test, y_test = UCR_UEA_datasets().load_dataset(dataset)
+        X_train, y_train, X_test, y_test = load_dataset(dataset)
         X_all = np.concatenate((X_train, X_test), axis=0)
         model = load_model(dataset)
         Y_all_pred = [np.argmax(instance) for instance in model.predict(X_all)]
@@ -29,13 +30,11 @@ def generate_test_instance(train_examples,dataset):
         zero_class = random.sample(X_idx_zero, 10)
         one_class = random.sample(X_idx_one, 10)
 
-
         X_test_instances = np.concatenate([zero_class,one_class])
         random.shuffle(X_test_instances)
         correct_ans_list = [0 if idx in zero_class else 1 for idx in X_test_instances ]
 
-
-        with open(f"{dataset}_CorrectAnswer.json", "w") as f:
+        with open(f"test_instances/{dataset}_CorrectAnswer.json", "w") as f:
             ans_dict = {idx.item():ans for idx,ans in zip(X_test_instances,correct_ans_list)}
             f.write(json.dumps(ans_dict,indent=2))
 
@@ -43,13 +42,13 @@ def generate_test_instance(train_examples,dataset):
         for i,test_instance in enumerate(X_test_instances):
             print(f"{i}:", url + str(test_instance))
 
-        with open(f"{dataset}_TestInstance.json", "w") as f:
+        with open(f"test_instances/{dataset}_TestInstance.json", "w") as f:
             questions = {f'{i}': url + str(test_instance) for i, test_instance in enumerate(X_test_instances)}
             f.write(json.dumps(questions,indent=2))
 
 
 if __name__ == "__main__":
-    datasets = ["ItalyPowerDemand"]#["GunPoint","","ArrowHead","ECGFiveDays","DistalPhalanxOutlineCorrect"]
+    datasets = ["ECGFiveDays", "ItalyPowerDemand", "GunPoint", "ArrowHead","ECGFiveDays", "DistalPhalanxOutlineCorrect"]
     for dataset in datasets:
         generate_test_instance([], dataset)
 

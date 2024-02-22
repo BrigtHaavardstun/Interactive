@@ -1,0 +1,22 @@
+{
+  "0": "http://localhost:3000?domain=ItalyPowerDemand&mode=test&instance=422",
+  "1": "http://localhost:3000?domain=ItalyPowerDemand&mode=test&instance=1093",
+  "2": "http://localhost:3000?domain=ItalyPowerDemand&mode=test&instance=193",
+  "3": "http://localhost:3000?domain=ItalyPowerDemand&mode=test&instance=63",
+  "4": "http://localhost:3000?domain=ItalyPowerDemand&mode=test&instance=447",
+  "5": "http://localhost:3000?domain=ItalyPowerDemand&mode=test&instance=62",
+  "6": "http://localhost:3000?domain=ItalyPowerDemand&mode=test&instance=376",
+  "7": "http://localhost:3000?domain=ItalyPowerDemand&mode=test&instance=44",
+  "8": "http://localhost:3000?domain=ItalyPowerDemand&mode=test&instance=419",
+  "9": "http://localhost:3000?domain=ItalyPowerDemand&mode=test&instance=534",
+  "10": "http://localhost:3000?domain=ItalyPowerDemand&mode=test&instance=582",
+  "11": "http://localhost:3000?domain=ItalyPowerDemand&mode=test&instance=495",
+  "12": "http://localhost:3000?domain=ItalyPowerDemand&mode=test&instance=56",
+  "13": "http://localhost:3000?domain=ItalyPowerDemand&mode=test&instance=221",
+  "14": "http://localhost:3000?domain=ItalyPowerDemand&mode=test&instance=170",
+  "15": "http://localhost:3000?domain=ItalyPowerDemand&mode=test&instance=307",
+  "16": "http://localhost:3000?domain=ItalyPowerDemand&mode=test&instance=245",
+  "17": "http://localhost:3000?domain=ItalyPowerDemand&mode=test&instance=878",
+  "18": "http://localhost:3000?domain=ItalyPowerDemand&mode=test&instance=841",
+  "19": "http://localhost:3000?domain=ItalyPowerDemand&mode=test&instance=1024"
+}

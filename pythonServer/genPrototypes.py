@@ -58,7 +58,7 @@ def get_index_in_train(cluster,x_data):
             return i
     raise Exception ("could find match for", cluster, "in x_data")
 
-def generate_prototypes(dataset,displayPlot=True):
+def generate_prototypes(dataset,cf_mode,displayPlot=True):
     seed = 42
 
     X_train, y_train, X_test, y_test = load_dataset(dataset)
@@ -80,10 +80,7 @@ def generate_prototypes(dataset,displayPlot=True):
     idx_co = [get_index_in_train(mediod, X_joint) for mediod in medoids_one]
     print("prototypes one", idx_co)
 
-
     # Visual
-
-
     data_dict_zero = {"z_" + str(i): val.flatten() for i, val in enumerate(medoids_zero)}
     data_dict_one_dw = {"o_" + str(i): val.flatten() for i, val in enumerate(medoids_one)}
 
@@ -91,7 +88,7 @@ def generate_prototypes(dataset,displayPlot=True):
         showPlot(data_dict_zero)
         showPlot(data_dict_one_dw)
 
-    url = "http://localhost:3000?domain=" + str(dataset) + "&mode=train"+ "&instance="
+    url = "http://localhost:3000?domain=" + str(dataset) + f"&cf_mode={cf_mode}&mode=train" + "&instance="
     all_data = idx_cz + idx_co
     random.seed(seed)
     random.shuffle(all_data)
@@ -104,8 +101,10 @@ def generate_prototypes(dataset,displayPlot=True):
 
 
 if __name__ == "__main__":
-    datasets = ["GunPoint"]#["GunPoint", "ItalyPowerDemand","ArrowHead","ECGFiveDays", "DistalPhalanxOutlineCorrect"]
+    datasets = ["ECGFiveDays", "ItalyPowerDemand", "GunPoint", "ArrowHead","ECGFiveDays"]
+    cf_modes = ["native", "artificial"]
+    cf_mode = cf_modes[1]
     for dataset in datasets:
-        generate_prototypes(dataset,displayPlot=False)
+        generate_prototypes(dataset, cf_mode=cf_mode, displayPlot=True)
 
 
