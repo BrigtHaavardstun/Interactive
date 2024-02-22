@@ -15,6 +15,7 @@ export default () => {
   const queryParameters = new URLSearchParams(window.location.search);
   const mode = queryParameters.get("mode");
 
+
   return (
     <div className="App">
       <Header />

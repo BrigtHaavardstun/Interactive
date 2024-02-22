@@ -10,14 +10,15 @@ import os
 
 
 
-from Blackbox_classifier_FCN.functionBased.counterfactual_utils import label_encoder, ucr_data_loader
+from Blackbox_classifier_FCN.functionBased.counterfactual_utils import label_encoder
 from Blackbox_classifier_FCN.functionBased.FCN_model import Classifier_FCN
+from utils.load_data import load_dataset
 
 def load_model(dataset):
     model = keras.models.load_model('Blackbox_classifier_FCN/' + str(dataset) + '_best_model.hdf5')
     return model
 def train_model(dataset,epochs=500,verbose=True):
-    X_train, y_train, X_test, y_test = ucr_data_loader(str(dataset))
+    X_train, y_train, X_test, y_test = load_dataset(str(dataset))
     y_train, y_test = label_encoder(y_train, y_test)
 
     input_shape = X_train.shape[1:]

@@ -1,38 +1,18 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
-from sklearn.svm import SVC
-from sklearn.linear_model import LogisticRegression
-from scipy.optimize import minimize
-from scipy.spatial.distance import cdist, pdist
-from scipy import stats
-from sklearn.metrics.pairwise import euclidean_distances as DistanceMetric
-from tslearn.datasets import UCR_UEA_datasets
-from sklearn.neighbors import NearestNeighbors
+
 from tslearn.neighbors import KNeighborsTimeSeries
-from sklearn.metrics import accuracy_score
-from scipy.interpolate import interp1d
+
 import tensorflow as tf
 from sklearn import preprocessing
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Activation, Conv1D, GlobalAveragePooling1D, BatchNormalization, Conv2D
-from tensorflow.keras.layers import GlobalAveragePooling1D
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.backend import function
-from sklearn.neighbors import LocalOutlierFactor
-from tslearn.utils import to_sklearn_dataset
-from tensorflow import keras
-from sklearn.svm import OneClassSVM
-from sklearn.neighbors import LocalOutlierFactor
+
 from NativeGuide.FunctionBased.showPlot import showPlot
 from Blackbox_classifier_FCN.functionBased.Train_model import load_model
+from utils.load_data import load_dataset
 print(tf.__version__)
 
 
-def ucr_data_loader(dataset):
-    X_train, y_train, X_test, y_test = UCR_UEA_datasets().load_dataset(dataset)
 
-    return X_train, y_train, X_test, y_test
 
 
 def label_encoder(training_labels, testing_labels):
@@ -44,7 +24,7 @@ def label_encoder(training_labels, testing_labels):
 
 
 def native_guide_retrieval(query, predicted_label, distance, n_neighbors,dataset):
-    X_train, y_train, X_test, y_test = ucr_data_loader(dataset)
+    X_train, y_train, X_test, y_test = load_dataset(dataset)
     y_train, y_test = label_encoder(y_train, y_test)
     df = pd.DataFrame(y_train, columns=['label'])
     df.index.name = 'index'
@@ -96,7 +76,7 @@ def load_weights(dataset):
 
 
 def counterfactual_generator_swap(instance, nun_idx, subarray_length,dataset):
-    X_train, y_train, X_test, y_test = ucr_data_loader(dataset)
+    X_train, y_train, X_test, y_test = load_dataset(dataset)
     y_train,y_test = label_encoder(y_train,y_test)
     _, _, joint_weights = load_weights(dataset)
 
@@ -120,9 +100,12 @@ def counterfactual_generator_swap(instance, nun_idx, subarray_length,dataset):
 
     prob_target = model.predict(X_example.reshape(1, -1, 1))[0][y_target]
 
-    prob_goal = 0.75 # How far over the line do we want to go?
-    while prob_target <= min(prob_goal,prob_max):
+    prob_goal = 0.51 # How far over the line do we want to go?
+    while prob_target < min(prob_goal,prob_max):
+
         subarray_length += 1
+        if subarray_length == len(X_example):
+            break
 
         most_influencial_array = findSubarray((joint_weights[nun_idx]), subarray_length)
         starting_point = np.where(joint_weights[nun_idx] == most_influencial_array[0])[0][0]
@@ -140,15 +123,28 @@ def find_cf(instance,dataset):
     pred_label = np.argmax(model.predict(instance))
 
     # Get NUN of instance
-    nun_idx = native_guide_retrieval(instance,pred_label,'euclidean',1,dataset)[1][0]
+    nun_idx = native_guide_retrieval(instance, pred_label,'euclidean',1,dataset)[1][0]
 
-    cf = counterfactual_generator_swap(instance,nun_idx,1,dataset)
+    cf = counterfactual_generator_swap(instance, nun_idx,1,dataset)
     return cf
+
+def find_native_cf(instance,dataset):
+    # Get label
+    model = load_model(dataset)
+    pred_label = np.argmax(model.predict(instance))
+
+    # Get NUN of instance
+    nun_idx = native_guide_retrieval(instance, pred_label, 'euclidean', 1, dataset)[1][0]
+    X_train, y_train, X_test, y_test = load_dataset(dataset)
+    nun_cf =  X_train[nun_idx]
+    nun_cf = [val[0] for val in nun_cf] # Convert from [[1],[2],..] to [1,2,..]
+    nun_cf = np.asarray(nun_cf)
+    return nun_cf
 
 
 def test():
     dataset =  "ItalyPowerDemand"
-    X_train, X_test, y_train, y_test = ucr_data_loader(dataset)
+    X_train, X_test, y_train, y_test = load_dataset(dataset)
     random_instance = X_train[19]
     random_instance = random_instance.reshape(1,-1,1)
     cf = find_cf(random_instance,dataset)

@@ -52,12 +52,6 @@ import time
 # In[3]:
 
 
-def ucr_data_loader(dataset):
-    
-    X_train, y_train, X_test, y_test = UCR_UEA_datasets().load_dataset(dataset)
-    
-    return X_train, y_train, X_test, y_test
-
 
 # In[4]:
 

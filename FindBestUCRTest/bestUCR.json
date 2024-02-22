@@ -1,0 +1,346 @@
+{
+  "Adiac": {
+    "length": 176,
+    "classes": 37
+  },
+  "ArrowHead": {
+    "length": 251,
+    "classes": 3
+  },
+  "Beef": {
+    "length": 470,
+    "classes": 5
+  },
+  "BeetleFly": {
+    "length": 512,
+    "classes": 2
+  },
+  "BirdChicken": {
+    "length": 512,
+    "classes": 2
+  },
+  "Car": {
+    "length": 577,
+    "classes": 4
+  },
+  "CBF": {
+    "length": 128,
+    "classes": 3
+  },
+  "ChlorineConcentration": {
+    "length": 166,
+    "classes": 3
+  },
+  "CinCECGTorso": {
+    "length": 1639,
+    "classes": 4
+  },
+  "Coffee": {
+    "length": 286,
+    "classes": 2
+  },
+  "Computers": {
+    "length": 720,
+    "classes": 2
+  },
+  "CricketX": {
+    "length": 300,
+    "classes": 12
+  },
+  "CricketY": {
+    "length": 300,
+    "classes": 12
+  },
+  "CricketZ": {
+    "length": 300,
+    "classes": 12
+  },
+  "DiatomSizeReduction": {
+    "length": 345,
+    "classes": 4
+  },
+  "DistalPhalanxOutlineCorrect": {
+    "length": 80,
+    "classes": 2
+  },
+  "DistalPhalanxOutlineAgeGroup": {
+    "length": 80,
+    "classes": 3
+  },
+  "DistalPhalanxTW": {
+    "length": 80,
+    "classes": 6
+  },
+  "Earthquakes": {
+    "length": 512,
+    "classes": 2
+  },
+  "ECG200": {
+    "length": 96,
+    "classes": 2
+  },
+  "ECG5000": {
+    "length": 140,
+    "classes": 5
+  },
+  "ECGFiveDays": {
+    "length": 136,
+    "classes": 2
+  },
+  "ElectricDevices": {
+    "length": 96,
+    "classes": 7
+  },
+  "FaceAll": {
+    "length": 131,
+    "classes": 14
+  },
+  "FaceFour": {
+    "length": 350,
+    "classes": 4
+  },
+  "FacesUCR": {
+    "length": 131,
+    "classes": 14
+  },
+  "FiftyWords": {
+    "length": 270,
+    "classes": 50
+  },
+  "Fish": {
+    "length": 463,
+    "classes": 7
+  },
+  "FordA": {
+    "length": 500,
+    "classes": 2
+  },
+  "FordB": {
+    "length": 500,
+    "classes": 2
+  },
+  "GunPoint": {
+    "length": 150,
+    "classes": 2
+  },
+  "Ham": {
+    "length": 431,
+    "classes": 2
+  },
+  "HandOutlines": {
+    "length": 2709,
+    "classes": 2
+  },
+  "Haptics": {
+    "length": 1092,
+    "classes": 5
+  },
+  "Herring": {
+    "length": 512,
+    "classes": 2
+  },
+  "InlineSkate": {
+    "length": 1882,
+    "classes": 7
+  },
+  "InsectWingbeatSound": {
+    "length": 256,
+    "classes": 11
+  },
+  "ItalyPowerDemand": {
+    "length": 24,
+    "classes": 2
+  },
+  "LargeKitchenAppliances": {
+    "length": 720,
+    "classes": 3
+  },
+  "Lightning2": {
+    "length": 637,
+    "classes": 2
+  },
+  "Lightning7": {
+    "length": 319,
+    "classes": 7
+  },
+  "Mallat": {
+    "length": 1024,
+    "classes": 8
+  },
+  "Meat": {
+    "length": 448,
+    "classes": 3
+  },
+  "MedicalImages": {
+    "length": 99,
+    "classes": 10
+  },
+  "MiddlePhalanxOutlineCorrect": {
+    "length": 80,
+    "classes": 2
+  },
+  "MiddlePhalanxOutlineAgeGroup": {
+    "length": 80,
+    "classes": 3
+  },
+  "MiddlePhalanxTW": {
+    "length": 80,
+    "classes": 6
+  },
+  "MoteStrain": {
+    "length": 84,
+    "classes": 2
+  },
+  "NonInvasiveFatalECGThorax1": {
+    "length": 750,
+    "classes": 42
+  },
+  "NonInvasiveFatalECGThorax2": {
+    "length": 750,
+    "classes": 42
+  },
+  "OliveOil": {
+    "length": 570,
+    "classes": 4
+  },
+  "OSULeaf": {
+    "length": 427,
+    "classes": 6
+  },
+  "PhalangesOutlinesCorrect": {
+    "length": 80,
+    "classes": 2
+  },
+  "Phoneme": {
+    "length": 1024,
+    "classes": 39
+  },
+  "Plane": {
+    "length": 144,
+    "classes": 7
+  },
+  "ProximalPhalanxOutlineCorrect": {
+    "length": 80,
+    "classes": 2
+  },
+  "ProximalPhalanxOutlineAgeGroup": {
+    "length": 80,
+    "classes": 3
+  },
+  "ProximalPhalanxTW": {
+    "length": 80,
+    "classes": 6
+  },
+  "RefrigerationDevices": {
+    "length": 720,
+    "classes": 3
+  },
+  "ScreenType": {
+    "length": 720,
+    "classes": 3
+  },
+  "ShapeletSim": {
+    "length": 500,
+    "classes": 2
+  },
+  "ShapesAll": {
+    "length": 512,
+    "classes": 60
+  },
+  "SmallKitchenAppliances": {
+    "length": 720,
+    "classes": 3
+  },
+  "SonyAIBORobotSurface1": {
+    "length": 70,
+    "classes": 2
+  },
+  "SonyAIBORobotSurface2": {
+    "length": 65,
+    "classes": 2
+  },
+  "StarLightCurves": {
+    "length": 1024,
+    "classes": 3
+  },
+  "Strawberry": {
+    "length": 235,
+    "classes": 2
+  },
+  "SwedishLeaf": {
+    "length": 128,
+    "classes": 15
+  },
+  "Symbols": {
+    "length": 398,
+    "classes": 6
+  },
+  "SyntheticControl": {
+    "length": 60,
+    "classes": 6
+  },
+  "ToeSegmentation1": {
+    "length": 277,
+    "classes": 2
+  },
+  "ToeSegmentation2": {
+    "length": 343,
+    "classes": 2
+  },
+  "Trace": {
+    "length": 275,
+    "classes": 4
+  },
+  "TwoLeadECG": {
+    "length": 82,
+    "classes": 2
+  },
+  "TwoPatterns": {
+    "length": 128,
+    "classes": 4
+  },
+  "UWaveGestureLibraryX": {
+    "length": 315,
+    "classes": 8
+  },
+  "UWaveGestureLibraryY": {
+    "length": 315,
+    "classes": 8
+  },
+  "UWaveGestureLibraryZ": {
+    "length": 315,
+    "classes": 8
+  },
+  "UWaveGestureLibraryAll": {
+    "length": 945,
+    "classes": 8
+  },
+  "Wafer": {
+    "length": 152,
+    "classes": 2
+  },
+  "Wine": {
+    "length": 234,
+    "classes": 2
+  },
+  "WordSynonyms": {
+    "length": 270,
+    "classes": 25
+  },
+  "Worms": {
+    "length": 900,
+    "classes": 5
+  },
+  "WormsTwoClass": {
+    "length": 900,
+    "classes": 2
+  },
+  "Yoga": {
+    "length": 426,
+    "classes": 2
+  },
+  "ArticularyWordRecognition": {
+    "length": 1296,
+    "classes": 25
+  }
+}

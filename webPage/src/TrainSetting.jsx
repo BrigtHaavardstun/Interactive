@@ -6,8 +6,9 @@ import BasicExample from "./MyProgressBar";
 
 export const TrainSetting = () => {
     const queryParameters = new URLSearchParams(window.location.search)
-    const dataSetName = queryParameters.get("domain")
-    const instance = queryParameters.get("instance")
+    const dataSetName = queryParameters.get("domain") // domain e.g. ItalyPowerDemand
+    const instance = queryParameters.get("instance") // number, e.g. 7
+    const cf_mode  = queryParameters.get("cf_mode") // native / artificial
     const color_class_map = {
         "0": "rgba(0,100,255,0.5)",
         "1": "rgba(217,2,250,0.5)"
@@ -85,7 +86,8 @@ export const TrainSetting = () => {
         axios.get('http://localhost:8765/cf', {
             params: {
                 timeSeries: JSON.stringify(dataSetCurr),// Convert dataSet to a JSON string
-                dataSet: dataSetName
+                dataSet: dataSetName,
+                cf_mode : cf_mode
             }
         })
             .then((res) => {

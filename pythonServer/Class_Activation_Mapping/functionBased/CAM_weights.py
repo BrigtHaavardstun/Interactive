@@ -1,10 +1,11 @@
 ### Training Weights
 
-from Class_Activation_Mapping.functionBased.counterfactual_utils import label_encoder, ucr_data_loader
+from Class_Activation_Mapping.functionBased.counterfactual_utils import label_encoder
 from tensorflow import keras
 import numpy as np
+from utils.load_data import load_dataset
 def training_weights_cam(dataset, save_weights=True):
-    X_train, y_train, X_test, y_test = ucr_data_loader(str(dataset))
+    X_train, y_train, X_test, y_test = load_dataset(str(dataset))
     y_train, y_test = label_encoder(y_train, y_test)
 
     model = keras.models.load_model("Blackbox_classifier_FCN/"+str(dataset) + '_best_model.hdf5')
@@ -37,7 +38,7 @@ def training_weights_cam(dataset, save_weights=True):
 
 
 def test_weights_cam(dataset, save_weights=True):
-    X_train, y_train, X_test, y_test = ucr_data_loader(str(dataset))
+    X_train, y_train, X_test, y_test = load_dataset(str(dataset))
     y_train, y_test = label_encoder(y_train, y_test)
 
     model = keras.models.load_model("Blackbox_classifier_FCN/"+str(dataset) + '_best_model.hdf5')
@@ -70,7 +71,7 @@ def test_weights_cam(dataset, save_weights=True):
 
 
 def joint_weights_cam(dataset, save_weights=True):
-    X_train, y_train, X_test, y_test = ucr_data_loader(str(dataset))
+    X_train, y_train, X_test, y_test = load_dataset(str(dataset))
     y_train, y_test = label_encoder(y_train, y_test)
 
     X_joint = np.concatenate([X_train,X_test])

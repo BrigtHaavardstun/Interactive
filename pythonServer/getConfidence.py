@@ -4,6 +4,9 @@ import numpy as np
 
 def get_confidence(ts,dataset):
     model = load_model(dataset)
-    confidence = np.max(model.predict(ts.reshape(1, -1, 1)))
+    predictions =model.predict(ts.reshape(1, -1, 1))
+    confidence = np.max(predictions[0])
+
+
     return confidence
 

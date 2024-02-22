@@ -1,9 +1,10 @@
+import random
+
 from sklearn_extra.cluster import KMedoids
-import numpy as np
-from tslearn.datasets import UCR_UEA_datasets
 from tensorflow import keras
 import numpy as np
 
+from pythonServer.utils.load_data import load_dataset
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -42,7 +43,7 @@ def showPlot(data):
     plt.show()
 
 def load_model(dataset):
-    model = keras.models.load_model('../pythonServer/Blackbox_classifier_FCN/' + str(dataset) + '_best_model.hdf5')
+    model = keras.models.load_model('Blackbox_classifier_FCN/' + str(dataset) + '_best_model.hdf5')
     return model
 
 def get_clusters(x_data):
@@ -57,10 +58,10 @@ def get_index_in_train(cluster,x_data):
             return i
     raise Exception ("could find match for", cluster, "in x_data")
 
-def generate_prototypes(dataset):
+def generate_prototypes(dataset,displayPlot=True):
     seed = 42
 
-    X_train, y_train, X_test, y_test = UCR_UEA_datasets().load_dataset(dataset)
+    X_train, y_train, X_test, y_test = load_dataset(dataset)
     X_joint = np.concatenate([X_train, X_test])
     print("Lengths:",len(X_train), len(X_test), len(y_train), len(y_test))
     ai_model = load_model(dataset)
@@ -86,18 +87,25 @@ def generate_prototypes(dataset):
     data_dict_zero = {"z_" + str(i): val.flatten() for i, val in enumerate(medoids_zero)}
     data_dict_one_dw = {"o_" + str(i): val.flatten() for i, val in enumerate(medoids_one)}
 
-    showPlot(data_dict_zero)
-    showPlot(data_dict_one_dw)
+    if displayPlot:
+        showPlot(data_dict_zero)
+        showPlot(data_dict_one_dw)
 
-    url = "http://localhost:3000?domain=" + str(dataset) + "&instance="
-    for i, test_instance in enumerate(idx_cz):
+    url = "http://localhost:3000?domain=" + str(dataset) + "&mode=train"+ "&instance="
+    all_data = idx_cz + idx_co
+    random.seed(seed)
+    random.shuffle(all_data)
+    for i, test_instance in enumerate(all_data):
         print(f"{i}:", url + str(test_instance))
-    for i, test_instance in enumerate(idx_co):
-        print(f"{i}:", url + str(test_instance))
+
+    with open(f"prototypes/{dataset}_train_URLs.txt", "w") as f:
+        for i, test_instance in enumerate(all_data):
+            f.write(f"{i}:" + " " + url + str(test_instance)+"\n")
+
 
 if __name__ == "__main__":
-    datasets = ["GunPoint", "ItalyPowerDemand"]
+    datasets = ["GunPoint"]#["GunPoint", "ItalyPowerDemand","ArrowHead","ECGFiveDays", "DistalPhalanxOutlineCorrect"]
     for dataset in datasets:
-        generate_prototypes(dataset)
+        generate_prototypes(dataset,displayPlot=False)
 
 

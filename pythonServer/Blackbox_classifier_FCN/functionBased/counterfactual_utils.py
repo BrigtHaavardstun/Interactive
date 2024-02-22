@@ -7,35 +7,10 @@
 import tensorflow as tf
 tf.get_logger().setLevel(40) # suppress deprecation messages
 tf.compat.v1.disable_v2_behavior() # disable TF2 behaviour as alibi code still relies on TF1 constructs
-from tensorflow.keras.layers import Dense, Input
-from tensorflow.keras.models import Model, load_model
-from tensorflow.keras.utils import to_categorical
 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Activation, Conv1D, GlobalAveragePooling1D, BatchNormalization, Conv2D
-from tensorflow.keras.layers import GlobalAveragePooling1D
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.backend import function
-
-import matplotlib
-import matplotlib.pyplot as plt
 import numpy as np
-import os
-import pandas as pd
-import seaborn as sns
-from sklearn.datasets import load_iris
-from alibi.explainers import CEM
-from sklearn.model_selection import train_test_split
-
-from sklearn.svm import SVC
-from sklearn.linear_model import LogisticRegression
-from scipy.optimize import minimize
-from scipy.spatial.distance import cdist, pdist
-from scipy import stats
-from sklearn.metrics.pairwise import euclidean_distances as DistanceMetric
-from tslearn.datasets import UCR_UEA_datasets
-from sklearn.neighbors import NearestNeighbors
 from tslearn.neighbors import KNeighborsTimeSeries
+from utils.load_data import load_dataset
 from sklearn.metrics import accuracy_score
 from sklearn import preprocessing
 print('TF version: ', tf.__version__)
@@ -52,11 +27,7 @@ import time
 # In[3]:
 
 
-def ucr_data_loader(dataset):
-    
-    X_train, y_train, X_test, y_test = UCR_UEA_datasets().load_dataset(dataset)
-    
-    return X_train, y_train, X_test, y_test
+
 
 
 # In[4]:

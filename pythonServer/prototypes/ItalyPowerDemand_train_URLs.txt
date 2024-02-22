@@ -1,0 +1,6 @@
+0: http://localhost:3000?domain=ItalyPowerDemand&mode=train&instance=514
+1: http://localhost:3000?domain=ItalyPowerDemand&mode=train&instance=623
+2: http://localhost:3000?domain=ItalyPowerDemand&mode=train&instance=537
+3: http://localhost:3000?domain=ItalyPowerDemand&mode=train&instance=897
+4: http://localhost:3000?domain=ItalyPowerDemand&mode=train&instance=334
+5: http://localhost:3000?domain=ItalyPowerDemand&mode=train&instance=284
