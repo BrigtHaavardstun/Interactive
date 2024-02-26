@@ -15,60 +15,56 @@ CORS(app)  # This will enable CORS for all routes
 @app.route('/confidence', methods=['GET'])
 def confidence():
     try:
-        time_series = request.args.get('timeSeries')  # Get the 'ys' parameter value
-        data_set = request.args.get('dataSet')
-
+        time_series = request.args.get('time_series')  # Get the 'ys' parameter value
+        data_set = request.args.get('data_set')
         time_series = json.loads(time_series)  # Parse 'ys' as JSON
         time_series = [float(y) for y in time_series]
-        #time_series = from_display_to_org(time_series, data_set)
         time_series = np.array(time_series)
 
 
         model_confidence = get_confidence(time_series, data_set)
-        return jsonify(model_confidence.item()), 200
+        return jsonify(model_confidence), 200
     except Exception as e:
-        print("COFIDENCE EROOR",e)
-        return jsonify(e), 400
+        print("COFIDENCE EROOR",str(e))
+        return jsonify(str(e)), 400
 
 
 @app.route('/getClass', methods=['GET'])
 def get_class():
+    try:
+        timeSeries = request.args.get('time_series')  # Get the 'ys' parameter value
+        dataSet = request.args.get('data_set')
+        if timeSeries is not None:
+            timeSeries = json.loads(timeSeries)  # Parse 'ys' as JSON
+            if timeSeries == [0,0]:
+                return 0
+            timeSeries = [float(y) for y in timeSeries]
+            #timeSeries = from_display_to_org(timeSeries,dataSet)
+            timeSeries = np.array(timeSeries)
 
-    timeSeries = request.args.get('timeSeries')  # Get the 'ys' parameter value
-    dataSet = request.args.get('dataSet')
-    if timeSeries is not None:
-        timeSeries = json.loads(timeSeries)  # Parse 'ys' as JSON
-        if timeSeries == [0,0]:
-            return 0
-        timeSeries = [float(y) for y in timeSeries]
-        #timeSeries = from_display_to_org(timeSeries,dataSet)
-        timeSeries = np.array(timeSeries)
-
-        if len(timeSeries) <= 10:
-            return "Too few data", 400
-        try:
+            if len(timeSeries) <= 10:
+                return "Too few data", 400
             class_of_ts = str(_classify(timeSeries,dataSet))
             print("Class:",class_of_ts)
             return_val = jsonify(class_of_ts), 200
             print("Classification:", return_val)
             return return_val
 
-        except Exception as e:
-            print(e)
-            return e, 400
+    except Exception as e:
+        print(str(e))
+        return e, 400
 
-        return return_val
-    else:
-        return "No 'ys' parameter provided.", 400  # Bad request
+
 
 
 @app.route('/getTS', methods=['GET'])
 def get_ts():
     try:
-        dataSet = request.args.get('dataSet')
+        dataSet = request.args.get('data_set')
         index = int(request.args.get('index'))
         time_series = get_time_series(dataSet,index).flatten().tolist()
         #time_series = from_org_to_display(time_series)
+        print("TIME_SERIES_", time_series)
         return jsonify(time_series), 200 # Convert from numpy to array
     except Exception as e:
         return jsonify({'error': e}), 400
@@ -83,10 +79,10 @@ def get_cf():
     @return A counterfactual time series. For now we only change one time series
     """
     try:
-        ts = request.args.get('timeSeries')  # List of time series
-        ts_org = request.args.get('timeSeries')  # List of time series
+        ts = request.args.get('time_series')  # List of time series
+        ts_org = request.args.get('time_series')  # List of time series
 
-        dataSet = request.args.get('dataSet')
+        dataSet = request.args.get('data_set')
 
         cf_mode = request.args.get('cf_mode')
 

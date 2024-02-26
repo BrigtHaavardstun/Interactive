@@ -6,7 +6,7 @@ from Class_Activation_Mapping.functionBased.CAM_weights import training_weights_
 
 if __name__ == '__main__':
 
-    dataSets = ["ECGFiveDays", "ItalyPowerDemand", "GunPoint", "ArrowHead","ECGFiveDays"]
+    dataSets = ["ECGFiveDays", "ItalyPowerDemand", "GunPoint", "ArrowHead"]
     for dataSet in dataSets:
         train_model(dataSet,epochs=2000)
         training_weights_cam(dataSet)

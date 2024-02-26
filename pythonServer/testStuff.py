@@ -3,7 +3,6 @@ from classifyTimeSeries import _classify
 from generateCF import generate_cf
 def test(dataset):
     x = get_time_series(dataset,0)
-    print(x.shape)
     c = _classify(x,dataset)
     cf = generate_cf(x,dataset)
 

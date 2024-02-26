@@ -63,11 +63,9 @@ def generate_prototypes(dataset,cf_mode,displayPlot=True):
 
     X_train, y_train, X_test, y_test = load_dataset(dataset)
     X_joint = np.concatenate([X_train, X_test])
-    print("Lengths:",len(X_train), len(X_test), len(y_train), len(y_test))
     ai_model = load_model(dataset)
     y_pred = ai_model.predict(X_joint)
     y_pred = [np.argmax(y) for y in y_pred]
-    print(y_pred)
     cz_x_joint = [X_joint[i].flatten() for i in range(len(X_joint)) if y_pred[i] == 0]  # Class zero x train
     co_x_joint = [X_joint[i].flatten() for i in range(len(X_joint)) if y_pred[i] == 1]  # Class one x train
 
@@ -76,9 +74,7 @@ def generate_prototypes(dataset,cf_mode,displayPlot=True):
     medoids_one = get_clusters(co_x_joint)
 
     idx_cz = [get_index_in_train(mediod, X_joint) for mediod in medoids_zero]
-    print("prototypes zero",idx_cz)
     idx_co = [get_index_in_train(mediod, X_joint) for mediod in medoids_one]
-    print("prototypes one", idx_co)
 
     # Visual
     data_dict_zero = {"z_" + str(i): val.flatten() for i, val in enumerate(medoids_zero)}
