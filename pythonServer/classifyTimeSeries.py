@@ -1,16 +1,12 @@
 
-from Blackbox_classifier_FCN.functionBased.Train_model import load_model
+from Blackbox_classifier_FCN.LITE.predict import predict_lite
 import numpy as np
 
-# Thread-local storage for our TensorFlow model
-#model_ITALY = load_model("ItalyPowerDemand")
 
-def get_model(data_set):
-    model = load_model(data_set)
-    return model
+
+
 def _classify(ts,dataset):
-    model = get_model(dataset)
-    prediction = np.argmax(model.predict(ts.reshape(1,-1,1))) # TODO: REDO
+    prediction = np.argmax(predict_lite(dataset,ts)) # TODO: REDO
     prediction = prediction.item()
     return prediction
 
