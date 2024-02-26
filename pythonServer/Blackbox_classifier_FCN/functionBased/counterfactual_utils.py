@@ -5,8 +5,6 @@
 
 
 import tensorflow as tf
-tf.get_logger().setLevel(40) # suppress deprecation messages
-tf.compat.v1.disable_v2_behavior() # disable TF2 behaviour as alibi code still relies on TF1 constructs
 
 import numpy as np
 from tslearn.neighbors import KNeighborsTimeSeries
@@ -14,7 +12,7 @@ from utils.load_data import load_dataset
 from sklearn.metrics import accuracy_score
 from sklearn import preprocessing
 print('TF version: ', tf.__version__)
-print('Eager execution enabled: ', tf.executing_eagerly()) # False
+print('Eager execution enabled counterfact utils: ', tf.executing_eagerly()) # False
 
 
 # In[2]:

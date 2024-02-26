@@ -28,7 +28,6 @@ def confidence():
         model_confidence = get_confidence(time_series, data_set)
         return jsonify(model_confidence), 200
     except Exception as e:
-        print("ERROR CONF!???", request.args.get('time_series'))# Get the 'ys' parameter value)
         print("COFIDENCE EROOR",str(e))
         return jsonify(str(e)), 400
 
@@ -51,9 +50,7 @@ def get_class():
             if len(time_series) <= 10:
                 return "Too few data", 400
             class_of_ts = str(_classify(time_series,data_set))
-            print("Class:",class_of_ts)
             return_val = jsonify(class_of_ts), 200
-            print("Classification:", return_val)
             return return_val
 
     except Exception as e:
@@ -70,7 +67,6 @@ def get_ts():
         index = int(request.args.get('index'))
         time_series = get_time_series(data_set,index).flatten().tolist()
         #time_series = from_org_to_display(time_series)
-        print("TIME_SERIES_", time_series)
         return jsonify(time_series), 200 # Convert from numpy to array
     except Exception as e:
         return jsonify({'error': e}), 400
@@ -84,7 +80,6 @@ def get_cf():
     we want to find a counterfactual of the index item to make it positive
     @return A counterfactual time series. For now we only change one time series
     """
-    print("GONAN GET CF!1")
 
     try:
         ts = request.args.get('time_series')  # List of time series
@@ -95,24 +90,19 @@ def get_cf():
         cf_mode = request.args.get('cf_mode')
 
         ts = json.loads(ts)
-        print("GONAN GET CF!2")
 
         if ts == [0,0]:
             return ts
-        print("CF-TS pre:",ts,"ORG-TAG:",ts_org)
         #ts = from_display_to_org(ts, data_set)
-        print("CF-TS post:",ts,"ORG-TAG:",ts_org)
         ts = np.asarray(ts)
 
 
 
 
-        print("GONAN GET CF!3")
 
         if ts is None:  # or index is None:
             return "You have to provide a 'data_set' parameter and a 'index' parameter.", 400
         else:
-            print("GONAN GET CF!4")
             if cf_mode == "native" or cf_mode.startswith("nat"):
                 cf = generate_native_cf(ts,data_set).flatten().tolist()
             elif cf_mode == "artificial" or cf_mode.startswith("art"):

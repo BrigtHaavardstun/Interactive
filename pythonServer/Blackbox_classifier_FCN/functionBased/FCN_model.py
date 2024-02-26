@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow import keras
-tf.get_logger().setLevel(40) # suppress deprecation messages
-tf.compat.v1.disable_v2_behavior() # disable TF2 behaviour as alibi code still relies on TF1 constructs
+#tf.get_logger().setLevel(40) # suppress deprecation messages
+#tf.compat.v1.disable_v2_behavior() # disable TF2 behaviour as alibi code still relies on TF1 constructs
 
 import numpy as np
 
@@ -40,7 +40,7 @@ class Classifier_FCN:
 
         model = keras.models.Model(inputs=input_layer, outputs=output_layer)
 
-        model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.legacy.Adam(),
+        model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.Adam(),
                       metrics=['accuracy'])
 
         reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor='loss', factor=0.5, patience=50,

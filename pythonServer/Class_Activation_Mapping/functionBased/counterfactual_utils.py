@@ -5,8 +5,8 @@
 
 
 import tensorflow as tf
-tf.get_logger().setLevel(40) # suppress deprecation messages
-tf.compat.v1.disable_v2_behavior() # disable TF2 behaviour as alibi code still relies on TF1 constructs
+#tf.get_logger().setLevel(40) # suppress deprecation messages
+#tf.compat.v1.disable_v2_behavior() # disable TF2 behaviour as alibi code still relies on TF1 constructs
 from tensorflow.keras.layers import Dense, Input
 from tensorflow.keras.models import Model, load_model
 from tensorflow.keras.utils import to_categorical
@@ -24,7 +24,7 @@ import os
 import pandas as pd
 import seaborn as sns
 from sklearn.datasets import load_iris
-from alibi.explainers import CEM
+#from alibi.explainers import CEM
 from sklearn.model_selection import train_test_split
 
 from sklearn.svm import SVC

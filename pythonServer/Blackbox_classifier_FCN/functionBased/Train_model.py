@@ -1,7 +1,5 @@
 
 import tensorflow as tf
-tf.get_logger().setLevel(40) # suppress deprecation messages
-tf.compat.v1.disable_v2_behavior() # disable TF2 behaviour as alibi code still relies on TF1 constructs
 from tensorflow.keras.utils import to_categorical
 from tensorflow import keras
 
@@ -41,5 +39,5 @@ def convert_to_lite(dataset):
     tflite_model = converter.convert()
 
     # Save the model.
-    with open('model.tflite', 'wb') as f:
-    f.write(tflite_model)
+    with open(f'Blackbox_classifier_FCN/LITE/{dataset}.tflite', 'wb') as f:
+        f.write(tflite_model)
