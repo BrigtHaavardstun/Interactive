@@ -18,13 +18,17 @@ def confidence():
         time_series = request.args.get('time_series')  # Get the 'ys' parameter value
         data_set = request.args.get('data_set')
         time_series = json.loads(time_series)  # Parse 'ys' as JSON
+        if len(time_series) <= 11:
+            return jsonify("1"), 200
         time_series = [float(y) for y in time_series]
         time_series = np.array(time_series)
+        
 
 
         model_confidence = get_confidence(time_series, data_set)
         return jsonify(model_confidence), 200
     except Exception as e:
+        print("ERROR CONF!???", request.args.get('time_series'))# Get the 'ys' parameter value)
         print("COFIDENCE EROOR",str(e))
         return jsonify(str(e)), 400
 
@@ -32,26 +36,28 @@ def confidence():
 @app.route('/getClass', methods=['GET'])
 def get_class():
     try:
-        timeSeries = request.args.get('time_series')  # Get the 'ys' parameter value
-        dataSet = request.args.get('data_set')
-        if timeSeries is not None:
-            timeSeries = json.loads(timeSeries)  # Parse 'ys' as JSON
-            if timeSeries == [0,0]:
-                return 0
-            timeSeries = [float(y) for y in timeSeries]
-            #timeSeries = from_display_to_org(timeSeries,dataSet)
-            timeSeries = np.array(timeSeries)
+        time_series = request.args.get('time_series')  # Get the 'ys' parameter value
+        if time_series == "[0,0]":
+            return "0", 200
+        data_set = request.args.get('data_set')
+        if time_series is not None:
+            time_series = json.loads(time_series)  # Parse 'ys' as JSON
+            if time_series == [0,0]:
+                return "0"
+            time_series = [float(y) for y in time_series]
+            #time_series = from_display_to_org(time_series,data_set)
+            time_series = np.array(time_series)
 
-            if len(timeSeries) <= 10:
+            if len(time_series) <= 10:
                 return "Too few data", 400
-            class_of_ts = str(_classify(timeSeries,dataSet))
+            class_of_ts = str(_classify(time_series,data_set))
             print("Class:",class_of_ts)
             return_val = jsonify(class_of_ts), 200
             print("Classification:", return_val)
             return return_val
 
     except Exception as e:
-        print(str(e))
+        print("ERROR IN CLASS", "ON ts:",request.args.get('time_series'), str(e))
         return e, 400
 
 
@@ -60,9 +66,9 @@ def get_class():
 @app.route('/getTS', methods=['GET'])
 def get_ts():
     try:
-        dataSet = request.args.get('data_set')
+        data_set = request.args.get('data_set')
         index = int(request.args.get('index'))
-        time_series = get_time_series(dataSet,index).flatten().tolist()
+        time_series = get_time_series(data_set,index).flatten().tolist()
         #time_series = from_org_to_display(time_series)
         print("TIME_SERIES_", time_series)
         return jsonify(time_series), 200 # Convert from numpy to array
@@ -78,45 +84,51 @@ def get_cf():
     we want to find a counterfactual of the index item to make it positive
     @return A counterfactual time series. For now we only change one time series
     """
+    print("GONAN GET CF!1")
+
     try:
         ts = request.args.get('time_series')  # List of time series
         ts_org = request.args.get('time_series')  # List of time series
 
-        dataSet = request.args.get('data_set')
+        data_set = request.args.get('data_set')
 
         cf_mode = request.args.get('cf_mode')
 
         ts = json.loads(ts)
+        print("GONAN GET CF!2")
+
         if ts == [0,0]:
             return ts
         print("CF-TS pre:",ts,"ORG-TAG:",ts_org)
-        #ts = from_display_to_org(ts, dataSet)
+        #ts = from_display_to_org(ts, data_set)
         print("CF-TS post:",ts,"ORG-TAG:",ts_org)
         ts = np.asarray(ts)
 
 
 
 
+        print("GONAN GET CF!3")
 
         if ts is None:  # or index is None:
-            return "You have to provide a 'dataSet' parameter and a 'index' parameter.", 400
+            return "You have to provide a 'data_set' parameter and a 'index' parameter.", 400
         else:
+            print("GONAN GET CF!4")
             if cf_mode == "native" or cf_mode.startswith("nat"):
-                cf = generate_native_cf(ts,dataSet).tolist()
+                cf = generate_native_cf(ts,data_set).flatten().tolist()
             elif cf_mode == "artificial" or cf_mode.startswith("art"):
-                cf = generate_cf(ts, dataSet).tolist()
+                cf = generate_cf(ts, data_set).flatten().tolist()
 
             else:
                 print(f"Invalid CF mode wrong cf mode {cf_mode}")
-                return f"Invalid CF mode {cf_mode}",500
+                return f"Invalid CF mode {cf_mode}",444
             return jsonify(cf), 200
 
     except Exception as e:
         print("We got an error", e)
-        return "Something  went wrong", 500
+        return "Something  went wrong", 444
 
 
 
 if __name__ == '__main__':
-    app.run(port=8765)  # Start the server
+    app.run(host="158.42.185.235",port=8765)  # Start the server
     # test()

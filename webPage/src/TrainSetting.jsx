@@ -8,16 +8,16 @@ export const TrainSetting = () => {
     const queryParameters = new URLSearchParams(window.location.search)
     const dataSetName = queryParameters.get("domain") // domain e.g. ItalyPowerDemand
     const instance = queryParameters.get("instance") // number, e.g. 7
-    const cf_mode  = queryParameters.get("cf_mode") // native / artificial
+    const cf_mode = queryParameters.get("cf_mode") // native / artificial
     const color_class_map = {
         "0": "rgba(0,100,255,0.5)",
         "1": "rgba(217,2,250,0.5)"
     }
-    const updateColor = (dataSet,colorSet) => {
-        axios.get('http://localhost:8765/getClass', {
+    const updateColor = (dataSet, colorSet) => {
+        axios.get('http://158.42.185.235:8765/getClass', {
             params: {
-                timeSeries: JSON.stringify(dataSet),
-                dataSet:dataSetName,// Convert dataSet to a JSON string
+                time_series: JSON.stringify(dataSet),
+                data_set: dataSetName,// Convert dataSet to a JSON string
             }
         })
             .then((res) => {
@@ -31,7 +31,7 @@ export const TrainSetting = () => {
             });
     };
 
-     const updateData = (dataSet, setData) => {
+    const updateData = (dataSet, setData) => {
         if (Array.isArray(dataSet)) {
             setData([...dataSet]);
         } else {
@@ -40,16 +40,16 @@ export const TrainSetting = () => {
     }
 
     // To recall the orginal data
-     const [lineColorOrg, setLineColorOrg] = useState(
+    const [lineColorOrg, setLineColorOrg] = useState(
         "rgba(159,159,171,0.25)"
     )
     const [dataSetOriginal, setDataSetOriginal] = useState(
-        [0,0] // Replace with python call
+        [0, 0] // Replace with python call
     )
     const getOrgData = () => {
-        axios.get('http://localhost:8765/getTS',{
+        axios.get('http://158.42.185.235:8765/getTS', {
             params: {
-                dataSet: dataSetName,
+                data_set: dataSetName,
                 index: parseInt(instance),//73=0 171=1// Convert dataSet to a JSON string
             }
         })
@@ -73,7 +73,7 @@ export const TrainSetting = () => {
     // Movable data
     const [dataSetCurr, setDataSetCurr] = useState([...dataSetOriginal]);
     const [lineColorCurr, setLineColorCurr] = useState('green');
-    useEffect(() => { updateColor(dataSetCurr,setLineColorCurr); }, [dataSetCurr]);
+    useEffect(() => { updateColor(dataSetCurr, setLineColorCurr); }, [dataSetCurr]);
     useEffect(() => {
         updateData(dataSetOriginal, setDataSetCurr)
     }, [dataSetOriginal]);
@@ -83,11 +83,11 @@ export const TrainSetting = () => {
     const [lineColorCF, setLineColorCF] = useState('green');
 
     const getCFData = () => {
-        axios.get('http://localhost:8765/cf', {
+        axios.get('http://158.42.185.235:8765/cf', {
             params: {
-                timeSeries: JSON.stringify(dataSetCurr),// Convert dataSet to a JSON string
-                dataSet: dataSetName,
-                cf_mode : cf_mode
+                time_series: JSON.stringify(dataSetCurr),// Convert dataSet to a JSON string
+                data_set: dataSetName,
+                cf_mode: cf_mode
             }
         })
             .then((res) => {
@@ -112,17 +112,17 @@ export const TrainSetting = () => {
         updateData(dataSetOriginal, setDataSetCurr)
     }
     const updateConfidence = (setConfidence, dataset) => {
-        axios.get('http://localhost:8765/confidence', {
+        axios.get('http://158.42.185.235:8765/confidence', {
             params: {
-                timeSeries: JSON.stringify(dataset),// Convert dataSet to a JSON string
-                dataSet: dataSetName
+                time_series: JSON.stringify(dataset),// Convert dataSet to a JSON string
+                data_set: dataSetName
             }
         })
             .then((res) => {
                 console.log(res.data)
                 // Display new counterfactual data
-                const confidence = parseFloat(res.data)*100; // Percentage
-                const confidence_one_dec = Math.round(confidence*10)/10; // one decimal
+                const confidence = parseFloat(res.data) * 100; // Percentage
+                const confidence_one_dec = Math.round(confidence * 10) / 10; // one decimal
                 setConfidence(confidence_one_dec);
 
 
@@ -134,15 +134,15 @@ export const TrainSetting = () => {
 
     const [confidence, setConfidence] = useState(50);
     useEffect(() => {
-        updateConfidence(setConfidence,dataSetCurr);
+        updateConfidence(setConfidence, dataSetCurr);
     }, [dataSetCurr]);
 
     return (
         <div>
-            <BasicExample currValue={confidence}/>
+            <BasicExample currValue={confidence} />
             <DraggableGraph dataSetCurrent={dataSetCurr} setDataCurrent={setDataSetCurr}
-                            dataSetOriginal={dataSetOriginal} updateData={updateData} dataSetCF={dataSetCF}
-                            lineColorCurr={lineColorCurr} lineColorOrg={lineColorOrg} lineColorCF={lineColorCF}/>
+                dataSetOriginal={dataSetOriginal} updateData={updateData} dataSetCF={dataSetCF}
+                lineColorCurr={lineColorCurr} lineColorOrg={lineColorOrg} lineColorCF={lineColorCF} />
             <button className={"button"} onClick={reset}>Reset to
                 orginal
             </button>

@@ -31,3 +31,15 @@ def train_model(dataset,epochs=500,verbose=True):
     fcn.build_model(input_shape=input_shape, nb_classes=nb_classes)
     fcn.fit(X_train, to_categorical(y_train))
     fcn.predict(X_test)
+
+
+def convert_to_lite(dataset):
+    model = load_model(dataset)
+
+    # Convert the model.
+    converter = tf.lite.TFLiteConverter.from_keras_model(model)
+    tflite_model = converter.convert()
+
+    # Save the model.
+    with open('model.tflite', 'wb') as f:
+    f.write(tflite_model)

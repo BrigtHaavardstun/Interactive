@@ -79,7 +79,7 @@ def counterfactual_generator_swap(instance, nun_idx, subarray_length,dataset):
     y_train,y_test = label_encoder(y_train,y_test)
     _, _, joint_weights = load_weights(dataset)
 
-    model = load_model(dataset)
+    model = get_model(dataset)
 
     model_preds = model.predict(X_train[nun_idx].reshape(1, -1, 1))[0]
     y_target = np.argmax(model_preds)
@@ -113,6 +113,10 @@ def counterfactual_generator_swap(instance, nun_idx, subarray_length,dataset):
     return X_example
 
 
+def get_model(data_set):
+    model = load_model(data_set)
+    return model
+
 def find_cf(instance,dataset):
     # Get label
     model = get_model(dataset)
@@ -125,14 +129,9 @@ def find_cf(instance,dataset):
     return cf
 
 
-# Thread-local storage for our TensorFlow model
-model_ITALY = load_model("ItalyPowerDemand")
 
 
-def get_model(dataset):
-    global model_ITALY
-    model = model_ITALY
-    return model
+
 def find_native_cf(instance,dataset):
     # Get label
     model = get_model(dataset)

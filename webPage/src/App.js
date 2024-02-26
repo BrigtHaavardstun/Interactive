@@ -1,7 +1,7 @@
 import React from "react";
 import "./styles.css";
 import { TrainSetting } from "./TrainSetting";
-import 'bootstrap/dist/css/bootstrap.min.css';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 import { TestSetting } from "./TestSetting";
 
 const Header = () => (

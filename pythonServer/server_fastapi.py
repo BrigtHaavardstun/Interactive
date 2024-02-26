@@ -12,12 +12,12 @@ app = FastAPI()
 
 # Where do we accept calls from
 origins = [
-    "http://localhost:3000",
+    "",
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -67,11 +67,12 @@ async def get_cf(time_series : str = Query(None, description=''), data_set : str
     if time_series == "[0,0]":
         return 0
     time_series = convert_time_series_str_list_float(time_series)
-
+    if cf_mode is None:
+        raise ValueError("CF_mode not supported. CF_mode:", cf_mode)
     if cf_mode == "native" or cf_mode.startswith("nat"):
-        cf = generate_native_cf(time_series, data_set).tolist()
+        cf = generate_native_cf(time_series, data_set).flatten().tolist()
     elif cf_mode == "artificial" or cf_mode.startswith("art"):
-        cf = generate_cf(time_series, data_set).tolist()
+        cf = generate_cf(time_series, data_set).flatten().tolist()
     else:
         raise ValueError("CF_mode not supported. CF_mode:", cf_mode)
 

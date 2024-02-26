@@ -13,11 +13,11 @@ export const TestSetting = () => {
         "0": "rgba(0,100,255,0.5)",
         "1": "rgba(217,2,250,0.5)"
     }
-    const updateColor = (dataSet,colorSet) => {
-        axios.get('http://localhost:8765/getClass', {
+    const updateColor = (dataSet, colorSet) => {
+        axios.get('http://158.42.185.235:8765/getClass', {
             params: {
                 timeSeries: JSON.stringify(dataSet),
-                dataSet:dataSetName,// Convert dataSet to a JSON string
+                dataSet: dataSetName,// Convert dataSet to a JSON string
             }
         })
             .then((res) => {
@@ -31,7 +31,7 @@ export const TestSetting = () => {
             });
     };
 
-     const updateData = (dataSet, setData) => {
+    const updateData = (dataSet, setData) => {
         if (Array.isArray(dataSet)) {
             setData([...dataSet]);
         } else {
@@ -41,10 +41,10 @@ export const TestSetting = () => {
 
 
     const [dataSetOriginal, setDataSetOriginal] = useState(
-        [0,0] // Replace with python call
+        [0, 0] // Replace with python call
     )
     const getOrgData = () => {
-        axios.get('http://localhost:8765/getTS',{
+        axios.get('http://158.42.185.235:8765/getTS', {
             params: {
                 dataSet: dataSetName,
                 index: parseInt(instance),//73=0 171=1// Convert dataSet to a JSON string
@@ -71,7 +71,7 @@ export const TestSetting = () => {
 
     return (
         <div>
-            <DraggableDataTest  dataSetOriginal={dataSetOriginal}  />
+            <DraggableDataTest dataSetOriginal={dataSetOriginal} />
         </div>
     );
 };
