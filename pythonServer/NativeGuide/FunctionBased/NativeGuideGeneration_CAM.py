@@ -9,7 +9,6 @@ from sklearn import preprocessing
 from NativeGuide.FunctionBased.showPlot import showPlot
 from Blackbox_classifier_FCN.functionBased.Train_model import load_model
 from utils.load_data import load_dataset
-print(tf.__version__)
 
 
 
@@ -83,11 +82,8 @@ def counterfactual_generator_swap(instance, nun_idx, subarray_length,dataset):
     model = load_model(dataset)
 
     model_preds = model.predict(X_train[nun_idx].reshape(1, -1, 1))[0]
-    print("model_preds:",model_preds)
     y_target = np.argmax(model_preds)
-    print("y_traget:", y_target)
     prob_max = model_preds[y_target]/sum(model_preds)
-    print("Prob_MAX",prob_max)
 
 
     most_influencial_array = findSubarray((joint_weights[nun_idx]), subarray_length)
@@ -119,7 +115,7 @@ def counterfactual_generator_swap(instance, nun_idx, subarray_length,dataset):
 
 def find_cf(instance,dataset):
     # Get label
-    model = load_model(dataset)
+    model = get_model(dataset)
     pred_label = np.argmax(model.predict(instance))
 
     # Get NUN of instance
@@ -128,16 +124,25 @@ def find_cf(instance,dataset):
     cf = counterfactual_generator_swap(instance, nun_idx,1,dataset)
     return cf
 
+
+# Thread-local storage for our TensorFlow model
+model_ITALY = load_model("ItalyPowerDemand")
+
+
+def get_model(dataset):
+    global model_ITALY
+    model = model_ITALY
+    return model
 def find_native_cf(instance,dataset):
     # Get label
-    model = load_model(dataset)
+    model = get_model(dataset)
     pred_label = np.argmax(model.predict(instance))
 
     # Get NUN of instance
     nun_idx = native_guide_retrieval(instance, pred_label, 'euclidean', 1, dataset)[1][0]
     X_train, y_train, X_test, y_test = load_dataset(dataset)
     nun_cf =  X_train[nun_idx]
-    nun_cf = [val[0] for val in nun_cf] # Convert from [[1],[2],..] to [1,2,..]
+    nun_cf = [val[0] for val in nun_cf]
     nun_cf = np.asarray(nun_cf)
     return nun_cf
 
