@@ -18,8 +18,7 @@ def predict_lite(data_set,instance):
     
     input_arr = instance
     input_arr = np.array(input_arr, dtype=np.float32)
-    input_arr = input_arr.reshape(1,12,1)
-
+    input_arr = input_arr.reshape([1, input_arr.shape[0], 1])
 
     interpreter.set_tensor(input_details[0]['index'], input_arr)
     interpreter.invoke()

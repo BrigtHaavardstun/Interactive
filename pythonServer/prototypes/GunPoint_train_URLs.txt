@@ -1,6 +1,6 @@
-0: http://localhost:3000?domain=GunPoint&cf_mode=artificial&mode=train&instance=40
-1: http://localhost:3000?domain=GunPoint&cf_mode=artificial&mode=train&instance=27
-2: http://localhost:3000?domain=GunPoint&cf_mode=artificial&mode=train&instance=73
-3: http://localhost:3000?domain=GunPoint&cf_mode=artificial&mode=train&instance=126
-4: http://localhost:3000?domain=GunPoint&cf_mode=artificial&mode=train&instance=115
-5: http://localhost:3000?domain=GunPoint&cf_mode=artificial&mode=train&instance=128
+0: http://158.42.185.235:8766?domain=GunPoint&cf_mode=artificial&mode=train&instance=121
+1: http://158.42.185.235:8766?domain=GunPoint&cf_mode=artificial&mode=train&instance=115
+2: http://158.42.185.235:8766?domain=GunPoint&cf_mode=artificial&mode=train&instance=27
+3: http://158.42.185.235:8766?domain=GunPoint&cf_mode=artificial&mode=train&instance=40
+4: http://158.42.185.235:8766?domain=GunPoint&cf_mode=artificial&mode=train&instance=73
+5: http://158.42.185.235:8766?domain=GunPoint&cf_mode=artificial&mode=train&instance=128

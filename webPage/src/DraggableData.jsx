@@ -5,10 +5,10 @@ import "chartjs-plugin-dragdata";
 
 
 
-const DraggableGraph = ({ dataSetCurrent,setDataCurrent, dataSetCF,dataSetOriginal,updateData, lineColorCurr,lineColorCF, lineColorOrg}) => {
-  const data_label = Array.from({length: dataSetOriginal.length}, (_, i) => i);
+const DraggableGraph = ({ dataSetCurrent, setDataCurrent, dataSetCF, dataSetOriginal, updateData, lineColorCurr, lineColorCF, lineColorOrg }) => {
+  const data_label = Array.from({ length: dataSetOriginal.length }, (_, i) => i);
   const state = {
-    dataSet: [ dataSetCurrent, dataSetCF,dataSetOriginal],
+    dataSet: [dataSetCurrent, dataSetCF, dataSetOriginal],
     labels: data_label,
     options: {
       tooltips: { enabled: true },
@@ -19,9 +19,9 @@ const DraggableGraph = ({ dataSetCurrent,setDataCurrent, dataSetCF,dataSetOrigin
             ticks: {
               fontColor: "#3C3C3C",
               fontSize: 14,
-              callback: function(value,index){
-                const step_size =  2
-                return index%step_size == 0 ? value : null;
+              callback: function (value, index) {
+                const step_size = 2
+                return index % step_size == 0 ? value : null;
               }
             }
           }
@@ -35,15 +35,15 @@ const DraggableGraph = ({ dataSetCurrent,setDataCurrent, dataSetCF,dataSetOrigin
             },
             ticks: {
               display: true,
-              min: -2,
-              max: 2.5,
+              min: -3,
+              max: 3,
               stepSize: 0.01,
               //maxTicksLimit: 4,
               fontColor: "#9B9B9B",
               padding: 30,
-              callback: function(value,index){
-                const step_size =  10
-                return index%step_size == 0 ? value : null;
+              callback: function (value, index) {
+                const step_size = 10
+                return index % step_size == 0 ? value : null;
               }
             },
             gridLines: {
@@ -84,7 +84,7 @@ const DraggableGraph = ({ dataSetCurrent,setDataCurrent, dataSetCF,dataSetOrigin
   const data = {
     labels: state.labels,
     datasets: [
-        {
+      {
         label: "Current",
         data: state.dataSet[0],
         lineTension: 0,
@@ -92,7 +92,7 @@ const DraggableGraph = ({ dataSetCurrent,setDataCurrent, dataSetCF,dataSetOrigin
         borderWidth: 5,
         pointRadius: 7,
         pointHoverRadius: 18,
-        pointBackgroundColor:  lineColorCurr,
+        pointBackgroundColor: lineColorCurr,
         pointBorderWidth: 0,
         spanGaps: false,
         dragData: true,
@@ -115,7 +115,7 @@ const DraggableGraph = ({ dataSetCurrent,setDataCurrent, dataSetCF,dataSetOrigin
         fill: false
 
       },
-        {
+      {
         label: "Original",
         data: state.dataSet[2],
         lineTension: 0,
@@ -123,7 +123,7 @@ const DraggableGraph = ({ dataSetCurrent,setDataCurrent, dataSetCF,dataSetOrigin
         borderWidth: 5,
         pointRadius: 1,
         pointHoverRadius: 1,
-        pointBackgroundColor:  lineColorOrg,
+        pointBackgroundColor: lineColorOrg,
         pointBorderWidth: 0,
         spanGaps: false,
         dragData: false,

@@ -4,7 +4,7 @@ from sklearn_extra.cluster import KMedoids
 from tensorflow import keras
 import numpy as np
 
-from pythonServer.utils.load_data import load_dataset
+from utils.load_data import load_dataset
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -83,8 +83,11 @@ def generate_prototypes(dataset,cf_mode,displayPlot=True):
     if displayPlot:
         showPlot(data_dict_zero)
         showPlot(data_dict_one_dw)
+    
+    host = "158.42.185.235"
+    port = "8766"
 
-    url = "http://localhost:3000?domain=" + str(dataset) + f"&cf_mode={cf_mode}&mode=train" + "&instance="
+    url = f"http://{host}:{port}?domain=" + str(dataset) + f"&cf_mode={cf_mode}&mode=train" + "&instance="
     all_data = idx_cz + idx_co
     random.seed(seed)
     random.shuffle(all_data)
@@ -97,7 +100,7 @@ def generate_prototypes(dataset,cf_mode,displayPlot=True):
 
 
 if __name__ == "__main__":
-    datasets = ["ECGFiveDays", "ItalyPowerDemand", "GunPoint", "ArrowHead","ECGFiveDays"]
+    datasets = ["Chinatown"]
     cf_modes = ["native", "artificial"]
     cf_mode = cf_modes[1]
     for dataset in datasets:

@@ -2,9 +2,9 @@ from NativeGuide.FunctionBased.NativeGuideGeneration_CAM import find_cf,find_nat
 
 
 def generate_cf(ts,dataset):
-    cf = find_cf(ts.reshape(1,-1,1),dataset)
+    cf = find_cf(ts,dataset)
     return cf
 
 def generate_native_cf(ts,dataset):
-    cf = find_native_cf(ts.reshape(1,-1,1),dataset)
+    cf = find_native_cf(ts,dataset)
     return cf

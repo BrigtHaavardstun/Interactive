@@ -6,7 +6,7 @@ from Class_Activation_Mapping.functionBased.CAM_weights import training_weights_
 
 if __name__ == '__main__':
 
-    dataSets = ["ECGFiveDays", "ItalyPowerDemand", "GunPoint", "ArrowHead"]
+    dataSets = ["Chinatown", "ItalyPowerDemand"]
     for dataSet in dataSets:
         train_model(dataSet,epochs=2000)
         convert_to_lite(dataSet)

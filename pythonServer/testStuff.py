@@ -1,7 +1,8 @@
 from flask import Flask, request, Response
 import numpy as np
 import tflite_runtime.interpreter as tflite
-from utils.load_data import load_dataset
+from utils.load_data import load_dataset,convert_sep_files,load_dataset_UCR,normalize_data
+from utils.datasets.Charging.fix_data import fix_data_format
 from Blackbox_classifier_FCN.functionBased.Train_model import load_model
 
 def test_pred_new(data_set,instance):
@@ -39,6 +40,10 @@ def org_way(data_set, instance):
     return preds
    
 
+def test_load():
+    data_set_name = "Chinatown"
+    load_dataset(data_set_name)
+
 def test():
     data_set = "ItalyPowerDemand"
     x_train,y_train, x_test, y_train = load_dataset(data_set)
@@ -56,5 +61,28 @@ def test():
     print("NEW pred:", preds_new)
 
 
+def convert_files():
+    data_sets = ["Chinatown", "ItalyPowerDemand","Charging"]
+    seps = ["   ", "  "]
+    filepath = "utils/datasets/"
+    for dataset,sep in zip(data_sets, seps):
+        modes = ["TRAIN", "TEST"]
+        for mode in modes:
+            curr_file = f"{filepath}/{dataset}/{dataset}_{mode}.txt"
+            convert_sep_files(curr_file,sep)
+    
+    for dataset in ["Chinatown"]:
+        normalize_data(dataset)
+
+    
+    x_train, y_train, x_test, y_test = load_dataset("Chinatown")
+    print(x_train)
+    x_train, y_train, x_test, y_test = load_dataset("ItalyPowerDemand")
+    print(x_train.shape)
+
+
+    x_train, y_train, x_test, y_test = load_dataset_UCR("ItalyPowerDemand")
+    print(x_train.shape)
+
 if __name__ == "__main__":
-    test()
+    fix_data_format()

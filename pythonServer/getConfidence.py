@@ -11,8 +11,8 @@ import threading
 
 
 def get_confidence(time_series:np.ndarray, data_set:str) -> float:
-    predictions = predict_lite(data_set, time_series)
-    confidence = np.max(predictions[0])
+    predictions = predict_lite(data_set, time_series)[0]
+    confidence = np.max(predictions)
     confidence = confidence.item()
     return confidence
 

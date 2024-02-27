@@ -5,9 +5,9 @@ import "chartjs-plugin-dragdata";
 
 
 
-const DraggableGraph = ({ dataSetOriginal}) => {
+const DraggableGraph = ({ dataSetOriginal }) => {
   console.log(dataSetOriginal)
-  const data_label = Array.from({length: dataSetOriginal.length}, (_, i) => i);
+  const data_label = Array.from({ length: dataSetOriginal.length }, (_, i) => i);
   const state = {
     dataSet: [dataSetOriginal],
     labels: data_label,
@@ -20,9 +20,9 @@ const DraggableGraph = ({ dataSetOriginal}) => {
             ticks: {
               fontColor: "#3C3C3C",
               fontSize: 14,
-              callback: function(value,index){
-                const step_size =  2
-                return index%step_size == 0 ? value : null;
+              callback: function (value, index) {
+                const step_size = 2
+                return index % step_size == 0 ? value : null;
               }
             }
           }
@@ -36,15 +36,15 @@ const DraggableGraph = ({ dataSetOriginal}) => {
             },
             ticks: {
               display: true,
-              min: -2,
-              max: 2.5,
+              min: -3,
+              max: 3,
               stepSize: 0.01,
               //maxTicksLimit: 4,
               fontColor: "#9B9B9B",
               padding: 30,
-              callback: function(value,index){
-                const step_size =  10
-                return index%step_size == 0 ? value : null;
+              callback: function (value, index) {
+                const step_size = 10
+                return index % step_size == 0 ? value : null;
               }
             },
             gridLines: {
@@ -85,7 +85,7 @@ const DraggableGraph = ({ dataSetOriginal}) => {
   const data = {
     labels: state.labels,
     datasets: [
-        {
+      {
         label: "Original",
         data: state.dataSet[0],
         lineTension: 0,
@@ -93,7 +93,7 @@ const DraggableGraph = ({ dataSetOriginal}) => {
         borderWidth: 5,
         pointRadius: 1,
         pointHoverRadius: 1,
-        pointBackgroundColor:  "rgba(159,159,171,0.25)",
+        pointBackgroundColor: "rgba(159,159,171,0.25)",
         pointBorderWidth: 1,
         spanGaps: false,
         dragData: false,

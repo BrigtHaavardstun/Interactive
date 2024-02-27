@@ -7,7 +7,6 @@ import tensorflow as tf
 from sklearn import preprocessing
 
 from NativeGuide.FunctionBased.showPlot import showPlot
-from Blackbox_classifier_FCN.functionBased.Train_model import load_model
 from Blackbox_classifier_FCN.LITE.predict import predict_lite
 from utils.load_data import load_dataset
 
@@ -26,7 +25,10 @@ def label_encoder(training_labels, testing_labels):
 def native_guide_retrieval(query, predicted_label, distance, n_neighbors,data_set):
     X_train, y_train, X_test, y_test = load_dataset(data_set)
     y_train, y_test = label_encoder(y_train, y_test)
-    df = pd.DataFrame(y_train, columns=['label'])
+    y_pred = [np.argmax(predict_lite(data_set,X_train[idx])[0]) for idx in range(len(X_train))]
+    print("unique?", np.unique(y_pred))
+
+    df = pd.DataFrame(y_pred, columns=['label'])
     df.index.name = 'index'
     #df[df['label'] == 1].index.values, df[df['label'] != 1].index.values
 
@@ -37,7 +39,8 @@ def native_guide_retrieval(query, predicted_label, distance, n_neighbors,data_se
     knn.fit(X_train[list(df[df['label'] != predicted_label].index.values)])
 
     dist, ind = knn.kneighbors(query.reshape(1, ts_length), return_distance=True)
-    return dist[0], df[df['label'] != predicted_label].index[ind[0][:]]
+    print(df[df['label'] != predicted_label].index[ind[0][:]])
+    return df[df['label'] != predicted_label].index[ind[0][:]]
 
 
 def findSubarray(a, k):  # used to find the maximum contigious subarray of length k in the explanation weight vector
@@ -80,7 +83,6 @@ def counterfactual_generator_swap(instance, nun_idx, subarray_length,data_set):
     y_train,y_test = label_encoder(y_train,y_test)
     _, _, joint_weights = load_weights(data_set)
 
-    #model = get_model(dataset)
 
     model_preds = predict_lite(data_set, X_train[nun_idx])[0]
     y_target = np.argmax(model_preds)
@@ -95,14 +97,13 @@ def counterfactual_generator_swap(instance, nun_idx, subarray_length,data_set):
                                 (X_train[nun_idx].flatten()[starting_point:subarray_length + starting_point]),
                                 instance.flatten()[subarray_length + starting_point:]))
 
-    prob_target = predict_lite(data_set, X_example.reshape(1, -1, 1))[0][y_target]
+    prob_target = predict_lite(data_set, X_example)[0][y_target]
 
     prob_goal = 0.51 # How far over the line do we want to go?
     while prob_target < min(prob_goal,prob_max):
 
         subarray_length += 1
-        if subarray_length == len(X_example):
-            break
+        
 
         most_influencial_array = findSubarray((joint_weights[nun_idx]), subarray_length)
         starting_point = np.where(joint_weights[nun_idx] == most_influencial_array[0])[0][0]
@@ -111,20 +112,22 @@ def counterfactual_generator_swap(instance, nun_idx, subarray_length,data_set):
                                     instance.flatten()[subarray_length + starting_point:]))
         prob_target = predict_lite(data_set,X_example)[0][y_target]
 
+        if subarray_length == len(X_example): # Stop if we are using the all
+            break
+
     return X_example
 
 
-def get_model(data_set):
-    model = load_model(data_set)
-    return model
+
 
 def find_cf(instance,data_set):
     # Get label
-    model = get_model(data_set)
-    pred_label = np.argmax(model.predict(instance))
+    pred_label = np.argmax(predict_lite(data_set,instance)[0])
 
     # Get NUN of instance
-    nun_idx = native_guide_retrieval(instance, pred_label,'euclidean',1,data_set)[1][0]
+
+    nun_idx = native_guide_retrieval(instance, pred_label,'euclidean',1,data_set)[0]
+    print(nun_idx,instance)
 
     cf = counterfactual_generator_swap(instance, nun_idx,1,data_set)
     return cf
@@ -135,11 +138,12 @@ def find_cf(instance,data_set):
 
 def find_native_cf(instance,data_set):
     # Get label
-    pred_label = np.argmax(predict_lite(data_set,instance))
+    pred_label = np.argmax(predict_lite(data_set,instance)[0])
 
     # Get NUN of instance
-    nun_idx = native_guide_retrieval(instance, pred_label, 'euclidean', 1, data_set)[1][0]
+    nun_idx = native_guide_retrieval(instance, pred_label, 'euclidean', 1, data_set)[0]
     X_train, y_train, X_test, y_test = load_dataset(data_set)
+
     nun_cf =  X_train[nun_idx]
     nun_cf = [val[0] for val in nun_cf]
     nun_cf = np.asarray(nun_cf)

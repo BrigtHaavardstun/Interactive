@@ -32,6 +32,7 @@ import time
 
 
 def label_encoder(training_labels, testing_labels):
+    print(training_labels, testing_labels)
     le = preprocessing.LabelEncoder()
     le.fit(np.concatenate((training_labels, testing_labels), axis=0))
     y_train = le.transform(training_labels)

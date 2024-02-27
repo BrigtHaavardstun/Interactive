@@ -37,8 +37,9 @@ def generate_test_instance(train_examples,dataset):
         with open(f"test_instances/{dataset}_CorrectAnswer.json", "w") as f:
             ans_dict = {idx.item():ans for idx,ans in zip(X_test_instances,correct_ans_list)}
             f.write(json.dumps(ans_dict,indent=2))
-
-        url = "http://localhost:3000?domain=" + str(dataset) + "&mode=test" + "&instance="
+        host = "158.42.185.235"
+        port = "8766"
+        url = f"http://{host}:{port}?domain=" + str(dataset) + "&mode=test" + "&instance="
         for i,test_instance in enumerate(X_test_instances):
             print(f"{i}:", url + str(test_instance))
 
@@ -48,7 +49,7 @@ def generate_test_instance(train_examples,dataset):
 
 
 if __name__ == "__main__":
-    datasets = ["ECGFiveDays", "ItalyPowerDemand", "GunPoint", "ArrowHead","ECGFiveDays", "DistalPhalanxOutlineCorrect"]
+    datasets = ["ItalyPowerDemand"]
     for dataset in datasets:
         generate_test_instance([], dataset)
 

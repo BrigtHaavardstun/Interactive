@@ -46,7 +46,7 @@ export const TestSetting = () => {
     const getOrgData = () => {
         axios.get('http://158.42.185.235:8765/getTS', {
             params: {
-                dataSet: dataSetName,
+                data_set: dataSetName,
                 index: parseInt(instance),//73=0 171=1// Convert dataSet to a JSON string
             }
         })

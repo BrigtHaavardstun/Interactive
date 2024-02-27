@@ -1,6 +1,6 @@
-0: http://localhost:3000?domain=ArrowHead&cf_mode=artificial&mode=train&instance=4
-1: http://localhost:3000?domain=ArrowHead&cf_mode=artificial&mode=train&instance=98
-2: http://localhost:3000?domain=ArrowHead&cf_mode=artificial&mode=train&instance=51
-3: http://localhost:3000?domain=ArrowHead&cf_mode=artificial&mode=train&instance=128
-4: http://localhost:3000?domain=ArrowHead&cf_mode=artificial&mode=train&instance=58
-5: http://localhost:3000?domain=ArrowHead&cf_mode=artificial&mode=train&instance=139
+0: http://158.42.185.235:8766?domain=ArrowHead&cf_mode=artificial&mode=train&instance=111
+1: http://158.42.185.235:8766?domain=ArrowHead&cf_mode=artificial&mode=train&instance=98
+2: http://158.42.185.235:8766?domain=ArrowHead&cf_mode=artificial&mode=train&instance=51
+3: http://158.42.185.235:8766?domain=ArrowHead&cf_mode=artificial&mode=train&instance=151
+4: http://158.42.185.235:8766?domain=ArrowHead&cf_mode=artificial&mode=train&instance=58
+5: http://158.42.185.235:8766?domain=ArrowHead&cf_mode=artificial&mode=train&instance=10

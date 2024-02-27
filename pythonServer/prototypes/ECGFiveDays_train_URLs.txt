@@ -1,6 +1,6 @@
-0: http://localhost:3000?domain=ECGFiveDays&cf_mode=artificial&mode=train&instance=745
-1: http://localhost:3000?domain=ECGFiveDays&cf_mode=artificial&mode=train&instance=180
-2: http://localhost:3000?domain=ECGFiveDays&cf_mode=artificial&mode=train&instance=400
-3: http://localhost:3000?domain=ECGFiveDays&cf_mode=artificial&mode=train&instance=721
-4: http://localhost:3000?domain=ECGFiveDays&cf_mode=artificial&mode=train&instance=759
-5: http://localhost:3000?domain=ECGFiveDays&cf_mode=artificial&mode=train&instance=23
+0: http://158.42.185.235:8766?domain=ECGFiveDays&cf_mode=artificial&mode=train&instance=745
+1: http://158.42.185.235:8766?domain=ECGFiveDays&cf_mode=artificial&mode=train&instance=535
+2: http://158.42.185.235:8766?domain=ECGFiveDays&cf_mode=artificial&mode=train&instance=119
+3: http://158.42.185.235:8766?domain=ECGFiveDays&cf_mode=artificial&mode=train&instance=721
+4: http://158.42.185.235:8766?domain=ECGFiveDays&cf_mode=artificial&mode=train&instance=648
+5: http://158.42.185.235:8766?domain=ECGFiveDays&cf_mode=artificial&mode=train&instance=23
