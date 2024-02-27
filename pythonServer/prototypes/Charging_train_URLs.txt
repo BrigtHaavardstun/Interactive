@@ -1,0 +1,6 @@
+0: http://158.42.185.235:8766?domain=Charging&cf_mode=artificial&mode=train&instance=212
+1: http://158.42.185.235:8766?domain=Charging&cf_mode=artificial&mode=train&instance=327
+2: http://158.42.185.235:8766?domain=Charging&cf_mode=artificial&mode=train&instance=214
+3: http://158.42.185.235:8766?domain=Charging&cf_mode=artificial&mode=train&instance=183
+4: http://158.42.185.235:8766?domain=Charging&cf_mode=artificial&mode=train&instance=355
+5: http://158.42.185.235:8766?domain=Charging&cf_mode=artificial&mode=train&instance=353

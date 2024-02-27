@@ -1,6 +1,6 @@
-0: http://158.42.185.235:8766?domain=ItalyPowerDemand&cf_mode=artificial&mode=train&instance=514
-1: http://158.42.185.235:8766?domain=ItalyPowerDemand&cf_mode=artificial&mode=train&instance=623
-2: http://158.42.185.235:8766?domain=ItalyPowerDemand&cf_mode=artificial&mode=train&instance=537
-3: http://158.42.185.235:8766?domain=ItalyPowerDemand&cf_mode=artificial&mode=train&instance=557
-4: http://158.42.185.235:8766?domain=ItalyPowerDemand&cf_mode=artificial&mode=train&instance=334
-5: http://158.42.185.235:8766?domain=ItalyPowerDemand&cf_mode=artificial&mode=train&instance=284
+0: http://158.42.185.235:8766?domain=ItalyPowerDemand&cf_mode=artificial&mode=train&instance=284
+1: http://158.42.185.235:8766?domain=ItalyPowerDemand&cf_mode=artificial&mode=train&instance=345
+2: http://158.42.185.235:8766?domain=ItalyPowerDemand&cf_mode=artificial&mode=train&instance=900
+3: http://158.42.185.235:8766?domain=ItalyPowerDemand&cf_mode=artificial&mode=train&instance=556
+4: http://158.42.185.235:8766?domain=ItalyPowerDemand&cf_mode=artificial&mode=train&instance=781
+5: http://158.42.185.235:8766?domain=ItalyPowerDemand&cf_mode=artificial&mode=train&instance=514

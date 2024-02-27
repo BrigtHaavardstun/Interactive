@@ -1,7 +1,7 @@
 from flask import Flask, request, Response
 import numpy as np
 import tflite_runtime.interpreter as tflite
-from utils.load_data import load_dataset,convert_sep_files,load_dataset_UCR,normalize_data
+from utils.load_data import load_dataset,convert_sep_files,load_dataset_UCR,normalize_data, train_test_split_both
 from utils.datasets.Charging.fix_data import fix_data_format
 from Blackbox_classifier_FCN.functionBased.Train_model import load_model
 
@@ -61,6 +61,8 @@ def test():
     print("NEW pred:", preds_new)
 
 
+
+
 def convert_files():
     data_sets = ["Chinatown", "ItalyPowerDemand","Charging"]
     seps = ["   ", "  "]
@@ -74,15 +76,17 @@ def convert_files():
     for dataset in ["Chinatown"]:
         normalize_data(dataset)
 
-    
+    train_test_split_both("Charging")
+
+
     x_train, y_train, x_test, y_test = load_dataset("Chinatown")
     print(x_train)
     x_train, y_train, x_test, y_test = load_dataset("ItalyPowerDemand")
     print(x_train.shape)
 
-
-    x_train, y_train, x_test, y_test = load_dataset_UCR("ItalyPowerDemand")
+    x_train, y_train, x_test, y_test = load_dataset("Charging")
     print(x_train.shape)
 
 if __name__ == "__main__":
-    fix_data_format()
+    fix_data_format() # Charging fix format
+    convert_files()

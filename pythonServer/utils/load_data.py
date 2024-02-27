@@ -70,7 +70,36 @@ def normalize_data(dataset_name):
             f.write(f"{y},{','.join([str(x) for x in row])}\n")
      
 
-    return x_train, y_train, x_test, y_test
+    #return x_train, y_train, x_test, y_test
+
+
+def train_test_split_both(dataset_name):
+    filepath_both = f"utils/datasets/{dataset_name}/{dataset_name}_BOTH.csv"
+    pd_data_both = pd.read_csv(filepath_both, sep=",", header=None)
+
+
+
+    # Extract the first column (y_train)
+    y_both = pd_data_both.iloc[:, 0]
+  
+    # Extract values excluding the first column (x_train)
+    x_both = pd_data_both.iloc[:, 1:].values  
+
+    X_train, X_test, y_train, y_test = train_test_split(x_both,y_both)
+
+    train_file = f"utils/datasets/{dataset_name}/{dataset_name}_TRAIN.csv"
+    with open(train_file, "w") as f:
+        for y, row in zip(y_train, X_train):
+            f.write(f"{y},{','.join([str(x) for x in row])}\n")
+    
+    test_file = f"utils/datasets/{dataset_name}/{dataset_name}_TEST.csv"
+    with open(test_file, "w") as f:
+        for y, row in zip(y_train, X_test):
+            f.write(f"{y},{','.join([str(x) for x in row])}\n")
+        
+
+
+    
 
 
 

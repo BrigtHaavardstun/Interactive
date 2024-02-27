@@ -49,6 +49,7 @@ def load_model(dataset):
 def get_clusters(x_data):
     seed = 42
     kmedoids = KMedoids(n_clusters=3, random_state=seed)
+    print(x_data)
     kmedoids.fit(x_data)
     return kmedoids.cluster_centers_
 
@@ -100,7 +101,7 @@ def generate_prototypes(dataset,cf_mode,displayPlot=True):
 
 
 if __name__ == "__main__":
-    datasets = ["Chinatown"]
+    datasets = ["ItalyPowerDemand", "Chinatown","Charging"]
     cf_modes = ["native", "artificial"]
     cf_mode = cf_modes[1]
     for dataset in datasets:
