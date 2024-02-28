@@ -6,9 +6,9 @@ from Class_Activation_Mapping.functionBased.CAM_weights import training_weights_
 
 if __name__ == '__main__':
 
-    dataSets = ["Charging"]#],"Chinatown", "ItalyPowerDemand"]
+    dataSets = ["Chinatown", "ItalyPowerDemand"]
     for dataSet in dataSets:
-        train_model(dataSet,epochs=100)
+        train_model(dataSet,epochs=2000)
         convert_to_lite(dataSet)
         training_weights_cam(dataSet)
         test_weights_cam(dataSet)

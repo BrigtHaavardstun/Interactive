@@ -22,4 +22,4 @@ def fix_data_format():
     values_df = pd.DataFrame(grouped_df['std_scaled'].tolist())
 
     # Save the values to a CSV file
-    values_df.to_csv('utils/datasets/Charging/Charging_FULL_DATA.csv', index=False, header=False)
+    values_df.to_csv('utils/datasets/Charging/Charging_BOTH.csv', index=False, header=False)

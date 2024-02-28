@@ -64,7 +64,7 @@ def test():
 
 
 def convert_files():
-    data_sets = ["Chinatown", "ItalyPowerDemand","Charging"]
+    data_sets = ["Chinatown", "ItalyPowerDemand"]
     seps = ["   ", "  "]
     filepath = "utils/datasets/"
     for dataset,sep in zip(data_sets, seps):
