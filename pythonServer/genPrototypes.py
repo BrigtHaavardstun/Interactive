@@ -49,7 +49,6 @@ def load_model(dataset):
 def get_clusters(x_data):
     seed = 42
     kmedoids = KMedoids(n_clusters=3, random_state=seed)
-    print(x_data)
     kmedoids.fit(x_data)
     return kmedoids.cluster_centers_
 
