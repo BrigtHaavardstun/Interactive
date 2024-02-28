@@ -85,14 +85,14 @@ const DraggableGraph = ({ dataSetCurrent, setDataCurrent, dataSetCF, dataSetOrig
     labels: state.labels,
     datasets: [
       {
-        label: "Current",
+        label: "Interactive",
         data: state.dataSet[0],
         lineTension: 0,
         borderColor: lineColorCurr,
         borderWidth: 5,
         pointRadius: 7,
         pointHoverRadius: 18,
-        pointBackgroundColor: lineColorCurr,
+        pointBackgroundColor: "black",
         pointBorderWidth: 0,
         spanGaps: false,
         dragData: true,
@@ -106,17 +106,18 @@ const DraggableGraph = ({ dataSetCurrent, setDataCurrent, dataSetCF, dataSetOrig
         lineTension: 0,
         borderColor: lineColorCF,
         borderWidth: 5,
-        pointRadius: 1,
+        pointRadius: 0,
         pointHoverRadius: 1,
         pointBackgroundColor: lineColorCF,
         pointBorderWidth: 0,
         spanGaps: false,
         dragData: false,
-        fill: false
+        fill: false,
+        borderDash: [3, 6] //[3,6]
 
       },
       {
-        label: "Original",
+        label: "Prototype",
         data: state.dataSet[2],
         lineTension: 0,
         borderColor: lineColorOrg,

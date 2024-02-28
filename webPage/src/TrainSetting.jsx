@@ -144,7 +144,7 @@ export const TrainSetting = () => {
                 dataSetOriginal={dataSetOriginal} updateData={updateData} dataSetCF={dataSetCF}
                 lineColorCurr={lineColorCurr} lineColorOrg={lineColorOrg} lineColorCF={lineColorCF} />
             <button className={"button"} onClick={reset}>Reset to
-                orginal
+                Prototype
             </button>
 
         </div>

@@ -6,8 +6,11 @@ import { TestSetting } from "./TestSetting";
 
 const Header = () => (
   <div className="header">
-    <h1>Survey on time series</h1>
-    <h2>By: MT4XAI project</h2>
+    <h3>The Prototype is now Interactive.</h3>
+    <h3>See if you manage to change the color of Interactive. Note Counterfactual is updated based on your changes of Interactive, and you can see the AI confidence at the top. </h3>
+    <h3>Note you can press "Reset to Prototype" at the bottom whenever you want.</h3>
+    <h3>When you are done, CLOSE this tab/window, and go back and press Next. </h3>
+
   </div>
 );
 
