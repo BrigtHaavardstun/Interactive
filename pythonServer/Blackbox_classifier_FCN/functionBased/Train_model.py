@@ -10,7 +10,7 @@ import os
 
 from Blackbox_classifier_FCN.functionBased.counterfactual_utils import label_encoder
 from Blackbox_classifier_FCN.functionBased.FCN_model import Classifier_FCN
-from utils.load_data import load_dataset
+from utils.load_data import load_dataset,load_dataset_UCR
 
 def load_model(dataset):
     model = keras.models.load_model('Blackbox_classifier_FCN/' + str(dataset) + '_best_model.hdf5')
@@ -28,7 +28,7 @@ def train_model(dataset,epochs=500,verbose=True):
                          dataset_name=dataset_name, verbose=verbose,epochs=epochs)
     fcn.build_model(input_shape=input_shape, nb_classes=nb_classes)
     fcn.fit(X_train, to_categorical(y_train))
-    fcn.predict(X_test)
+    #fcn.predict(X_test)
 
 
 def convert_to_lite(dataset):

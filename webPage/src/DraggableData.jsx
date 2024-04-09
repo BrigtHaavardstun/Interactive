@@ -35,10 +35,10 @@ const DraggableGraph = ({ dataSetCurrent, setDataCurrent, dataSetCF, dataSetOrig
             },
             ticks: {
               display: true,
-              min: -3,
-              max: 3,
+              min: -2,
+              max: 4,
               stepSize: 0.01,
-              //maxTicksLimit: 4,
+              //maxTicksLimit: 10,
               fontColor: "#9B9B9B",
               padding: 30,
               callback: function (value, index) {
@@ -90,7 +90,7 @@ const DraggableGraph = ({ dataSetCurrent, setDataCurrent, dataSetCF, dataSetOrig
         lineTension: 0,
         borderColor: lineColorCurr,
         borderWidth: 5,
-        pointRadius: 7,
+        pointRadius: 7,//7
         pointHoverRadius: 18,
         pointBackgroundColor: "black",
         pointBorderWidth: 0,
@@ -113,7 +113,7 @@ const DraggableGraph = ({ dataSetCurrent, setDataCurrent, dataSetCF, dataSetOrig
         spanGaps: false,
         dragData: false,
         fill: false,
-        borderDash: [3, 6] //[3,6]
+        borderDash: [3, 6]
 
       },
       {

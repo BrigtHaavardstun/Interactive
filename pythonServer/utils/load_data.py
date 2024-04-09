@@ -20,35 +20,25 @@ def convert_sep_files(file, sep):
 
 
 def normalize_data(dataset_name):
-    filepath_train = f"utils/datasets/{dataset_name}/{dataset_name}_TRAIN.csv"
-    pd_data_train = pd.read_csv(filepath_train, sep=",", header=None)
-    filepath_test = f"utils/datasets/{dataset_name}/{dataset_name}_TEST.csv"
-    pd_data_test = pd.read_csv(filepath_test, sep=",", header=None)
+    X_train, y_train, X_test, y_test = load_dataset(dataset_name)
+    print(len(X_train), len(X_test))
+    org_x_train_shape = X_train.shape
+    org_x_test_shape = X_test.shape
+    X_train = np.array([[value[0] for value in row] for row in X_train])
+    X_test = np.array([[value[0] for value in row] for row in X_test])
+
+    x_comb = np.concatenate([X_train,X_test]).flatten().reshape(-1,1)
+    print(x_comb[0])
+    print(type(x_comb))
 
 
+    normalizer = StandardScaler()
 
-    # Extract the first column (y_train)
-    y_train = pd_data_train.iloc[:, 0]
-    y_test = pd_data_test.iloc[:,0]
-
-  
-    # Extract values excluding the first column (x_train)
-    x_train = pd_data_train.iloc[:, 1:].values  
-    x_test = pd_data_test.iloc[:,1:].values
-
-    # numpy arrays
-    x_train = np.array(x_train)
-    x_test = np.array(x_test)
-
-    normalizer = RobustScaler()
-    x_comb = np.concatenate([x_train,x_test])
     normalizer.fit(x_comb)
-    x_train_fitted = normalizer.transform(x_train)
-    x_train = x_train_fitted.reshape(x_train.shape)
-
-    x_test_fitted = normalizer.transform(x_test)
-    x_test = x_test_fitted.reshape(x_test.shape)
-    #x_test = x_test.reshape((x_test_shape[0], x_test_shape[1], 1))
+    print("Here:",X_train[0])
+    X_train = [[normalizer.transform(x.reshape(-1,1))[0][0] for x in row] for row in X_train]
+    print("Here 2:", X_train[0])
+    X_test = [[normalizer.transform(x.reshape(-1,1))[0][0] for x in row] for  row in X_test]
 
 
     y_train = np.array(y_train)
@@ -61,12 +51,16 @@ def normalize_data(dataset_name):
 
     #x_test = x_test.reshape((x_test_shape[0], x_test_shape[1]))
     #x_train = x_train.reshape((x_test_shape[0], x_test_shape[1]))
+    filepath_train = f"utils/datasets/{dataset_name}/{dataset_name}_TRAIN.csv"
+
     with open(filepath_train, "w") as f:
-        for y, row in zip(y_train, x_train):
+        for y, row in zip(y_train, X_train):
             f.write(f"{y},{','.join([str(x) for x in row])}\n")
 
+    filepath_test = f"utils/datasets/{dataset_name}/{dataset_name}_TEST.csv"
+
     with open(filepath_test, "w") as f:
-        for y, row in zip(y_test, x_test):
+        for y, row in zip(y_test, X_test):
             f.write(f"{y},{','.join([str(x) for x in row])}\n")
      
 
@@ -102,47 +96,51 @@ def train_test_split_both(dataset_name):
     
 
 
-
+global DATA_DICT
 def load_dataset(dataset_name):
-    filepath_train = f"utils/datasets/{dataset_name}/{dataset_name}_TRAIN.csv"
-    pd_data_train = pd.read_csv(filepath_train, sep=",", header=None)
-    filepath_test = f"utils/datasets/{dataset_name}/{dataset_name}_TEST.csv"
-    pd_data_test = pd.read_csv(filepath_test, sep=",", header=None)
+    global DATA_DICT
+    if dataset_name not in DATA_DICT:
+        filepath_train = f"utils/datasets/{dataset_name}/{dataset_name}_TRAIN.csv"
+        pd_data_train = pd.read_csv(filepath_train, sep=",", header=None)
+        filepath_test = f"utils/datasets/{dataset_name}/{dataset_name}_TEST.csv"
+        pd_data_test = pd.read_csv(filepath_test, sep=",", header=None)
 
 
 
-    # Extract the first column (y_train)
-    y_train = pd_data_train.iloc[:, 0]
-    y_test = pd_data_test.iloc[:,0]
+        # Extract the first column (y_train)
+        y_train = pd_data_train.iloc[:, 0]
+        y_test = pd_data_test.iloc[:,0]
+
+    
+    
+        # Extract values excluding the first column (x_train)
+        x_train = pd_data_train.iloc[:, 1:].values  
+        x_test = pd_data_test.iloc[:,1:].values
+
+    
+
+        #normalizer = StandardScaler()
+        #x_train = normalizer.fit_transform(x_train)
+        x_train_shape = x_train.shape
+        x_train = x_train.reshape((x_train_shape[0], x_train_shape[1], 1))
+        #x_test = normalizer.transform(x_test)
+        x_test_shape = x_test.shape
+        x_test = x_test.reshape((x_test_shape[0], x_test_shape[1], 1))
+
+
+        y_train = np.array(y_train)
+        y_test = np.array(y_test)
+        le = LabelEncoder()
+        le.fit(np.concatenate([y_train, y_test]))
+        y_train = le.transform(y_train)
+        y_test  = le.transform(y_test)
 
   
-    # Extract values excluding the first column (x_train)
-    x_train = pd_data_train.iloc[:, 1:].values  
-    x_test = pd_data_test.iloc[:,1:].values
+        DATA_DICT[dataset_name] = [x_train, y_train, x_test, y_test]
+    x_train, y_train, x_test, y_test= DATA_DICT[dataset_name]
 
-    # numpy arrays
-    x_train = np.array(x_train)
-    x_test = np.array(x_test)
-
-    #normalizer = StandardScaler()
-    #x_train = normalizer.fit_transform(x_train)
-    x_train_shape = x_train.shape
-    x_train = x_train.reshape((x_train_shape[0], x_train_shape[1], 1))
-    #x_test = normalizer.transform(x_test)
-    x_test_shape = x_test.shape
-    x_test = x_test.reshape((x_test_shape[0], x_test_shape[1], 1))
-
-
-    y_train = np.array(y_train)
-    y_test = np.array(y_test)
-    #le = LabelEncoder()
-    #le.fit(np.concatenate([y_train, y_test]))
-    #y_train = le.transform(y_train)
-    #y_test  = le.transform(y_test)
-
-     
-
-    return x_train, y_train, x_test, y_test
+    return DATA_DICT[dataset_name]
+    #print("inside:", x_train)
 
 
 

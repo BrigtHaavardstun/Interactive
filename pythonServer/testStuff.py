@@ -76,17 +76,17 @@ def convert_files():
     for dataset in ["Chinatown"]:
         normalize_data(dataset)
 
-    train_test_split_both("Charging")
+    #train_test_split_both("Charging")
 
 
     x_train, y_train, x_test, y_test = load_dataset("Chinatown")
-    print(x_train)
+    #print("china:",x_train)
     x_train, y_train, x_test, y_test = load_dataset("ItalyPowerDemand")
-    print(x_train.shape)
 
     x_train, y_train, x_test, y_test = load_dataset("Charging")
-    print(x_train.shape)
 
 if __name__ == "__main__":
+    #X_train, y_train, X_test, y_test = load_dataset_UCR("ItalyPowerDemand")
+    #print("UCR_",X_train[0])
     fix_data_format() # Charging fix format
     convert_files()

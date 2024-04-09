@@ -1,6 +1,6 @@
-0: http://158.42.185.235:8766?domain=Chinatown&cf_mode=artificial&mode=train&instance=178
-1: http://158.42.185.235:8766?domain=Chinatown&cf_mode=artificial&mode=train&instance=34
-2: http://158.42.185.235:8766?domain=Chinatown&cf_mode=artificial&mode=train&instance=29
-3: http://158.42.185.235:8766?domain=Chinatown&cf_mode=artificial&mode=train&instance=277
-4: http://158.42.185.235:8766?domain=Chinatown&cf_mode=artificial&mode=train&instance=31
-5: http://158.42.185.235:8766?domain=Chinatown&cf_mode=artificial&mode=train&instance=263
+0: http://158.42.185.235:8766?domain=Chinatown&cf_mode=artificial&mode=train&instance=189
+1: http://158.42.185.235:8766?domain=Chinatown&cf_mode=artificial&mode=train&instance=113
+2: http://158.42.185.235:8766?domain=Chinatown&cf_mode=artificial&mode=train&instance=20
+3: http://158.42.185.235:8766?domain=Chinatown&cf_mode=artificial&mode=train&instance=315
+4: http://158.42.185.235:8766?domain=Chinatown&cf_mode=artificial&mode=train&instance=26
+5: http://158.42.185.235:8766?domain=Chinatown&cf_mode=artificial&mode=train&instance=125

@@ -5,7 +5,7 @@ from utils.load_data import load_dataset
 from Blackbox_classifier_FCN.functionBased.Train_model import load_model
 
 def predict_lite(data_set,instance):
-    interpreter = tflite.Interpreter(model_path="Blackbox_classifier_FCN/LITE/ItalyPowerDemand.tflite")
+    interpreter = tflite.Interpreter(model_path=f"Blackbox_classifier_FCN/LITE/{data_set}.tflite")
     interpreter.allocate_tensors()
 
     # Get input and output tensors

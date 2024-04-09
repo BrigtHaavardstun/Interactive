@@ -8,6 +8,8 @@ from utils.load_data import load_dataset
 import pandas as pd
 import matplotlib.pyplot as plt
 
+from Blackbox_classifier_FCN.LITE.predict import predict_lite
+
 
 def showPlot(data):
     plt.style.use("classic")
@@ -62,10 +64,10 @@ def generate_prototypes(dataset,cf_mode,displayPlot=True):
     seed = 42
 
     X_train, y_train, X_test, y_test = load_dataset(dataset)
+    print(dataset)
+    #print(X_train, y_train, X_test, y_test)
     X_joint = np.concatenate([X_train, X_test])
-    ai_model = load_model(dataset)
-    y_pred = ai_model.predict(X_joint)
-    y_pred = [np.argmax(y) for y in y_pred]
+    y_pred = [np.argmax(predict_lite(dataset,x)) for x in X_joint]
     cz_x_joint = [X_joint[i].flatten() for i in range(len(X_joint)) if y_pred[i] == 0]  # Class zero x train
     co_x_joint = [X_joint[i].flatten() for i in range(len(X_joint)) if y_pred[i] == 1]  # Class one x train
 

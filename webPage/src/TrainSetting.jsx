@@ -9,6 +9,8 @@ export const TrainSetting = () => {
     const dataSetName = queryParameters.get("domain") // domain e.g. ItalyPowerDemand
     const instance = queryParameters.get("instance") // number, e.g. 7
     const cf_mode = queryParameters.get("cf_mode") // native / artificial
+    const cf_visable = queryParameters.get("cf_nvisable") == 1
+
     const color_class_map = {
         "0": "rgba(0,100,255,0.5)",
         "1": "rgba(217,2,250,0.5)"
@@ -132,7 +134,7 @@ export const TrainSetting = () => {
             });
     };
 
-    const [confidence, setConfidence] = useState(50);
+    const [confidence, setConfidence] = useState(100);
     useEffect(() => {
         updateConfidence(setConfidence, dataSetCurr);
     }, [dataSetCurr]);
@@ -142,10 +144,9 @@ export const TrainSetting = () => {
             <BasicExample currValue={confidence} />
             <DraggableGraph dataSetCurrent={dataSetCurr} setDataCurrent={setDataSetCurr}
                 dataSetOriginal={dataSetOriginal} updateData={updateData} dataSetCF={dataSetCF}
-                lineColorCurr={lineColorCurr} lineColorOrg={lineColorOrg} lineColorCF={lineColorCF} />
-            <button className={"button"} onClick={reset}>Reset to
-                Prototype
-            </button>
+                lineColorCurr={lineColorCurr} lineColorOrg={lineColorOrg} lineColorCF={lineColorCF}
+            />
+            <button className={"button"} onClick={reset} >RESET TO PROTOTYPE</button>
 
         </div>
     );

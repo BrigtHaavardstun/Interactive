@@ -29,7 +29,6 @@ def generate_test_instance(train_examples,dataset):
     random.seed(seed)
     zero_class = random.sample(X_idx_zero, 10)
     one_class = random.sample(X_idx_one, 10)
-
     X_test_instances = np.concatenate([zero_class,one_class])
     random.shuffle(X_test_instances)
     correct_ans_list = [0 if idx in zero_class else 1 for idx in X_test_instances ]
@@ -57,19 +56,21 @@ def convert_to_html_format(dataset):
         json_obj = parsed_json
     all_html_code = {}
     for idx,key in enumerate(json_obj.keys()):
-        html_code = f'<center><h1> Test {idx}.</h1><img alt="" src="/files/XAIBergen/ItalyPowerDemand/test_{key}.png" style="width: 1200px; height: 600px;"/></center>'
+        html_code = f'<center><h1> Test {idx+1}. What do you think the AI classified this as?</h1><img alt="" src="/files/XAIBergen/{dataset}/Test/{key}.png" style="width: 100%; height: auto;"/></center>'
         all_html_code[key]= html_code
     
     file_path = f"test_instances/{dataset}_TestInstanceHTML.json"
     json_string = json.dumps(all_html_code, indent=4)
     with open(file_path, "w") as json_file:
-        json_file.write(json_string)
+        for key in all_html_code.keys():
+            json_file.write(f"{all_html_code[key]}\n")
+        #json_file.write(json_string)
     
     for key in all_html_code.keys():
         print(f"{key}:  {all_html_code[key]}")
 
 if __name__ == "__main__":
-    datasets = ["ItalyPowerDemand"]
+    datasets = ["ItalyPowerDemand","Chinatown", "Charging"]
     for dataset in datasets:
         generate_test_instance([], dataset)
         convert_to_html_format(dataset)
