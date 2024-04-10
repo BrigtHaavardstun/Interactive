@@ -16,7 +16,7 @@ export const TrainSetting = () => {
         "1": "rgba(217,2,250,0.5)"
     }
     const updateColor = (dataSet, colorSet) => {
-        axios.get('http://158.42.185.235:8765/getClass', {
+        axios.get('http://localhost:3030/getClass', {
             params: {
                 time_series: JSON.stringify(dataSet),
                 data_set: dataSetName,// Convert dataSet to a JSON string
@@ -49,7 +49,7 @@ export const TrainSetting = () => {
         [0, 0] // Replace with python call
     )
     const getOrgData = () => {
-        axios.get('http://158.42.185.235:8765/getTS', {
+        axios.get('http://localhost:3030/getTS', {
             params: {
                 data_set: dataSetName,
                 index: parseInt(instance),//73=0 171=1// Convert dataSet to a JSON string
@@ -85,7 +85,7 @@ export const TrainSetting = () => {
     const [lineColorCF, setLineColorCF] = useState('green');
 
     const getCFData = () => {
-        axios.get('http://158.42.185.235:8765/cf', {
+        axios.get('http://localhost:3030/cf', {
             params: {
                 time_series: JSON.stringify(dataSetCurr),// Convert dataSet to a JSON string
                 data_set: dataSetName,
@@ -114,7 +114,7 @@ export const TrainSetting = () => {
         updateData(dataSetOriginal, setDataSetCurr)
     }
     const updateConfidence = (setConfidence, dataset) => {
-        axios.get('http://158.42.185.235:8765/confidence', {
+        axios.get('http://localhost:3030/confidence', {
             params: {
                 time_series: JSON.stringify(dataset),// Convert dataSet to a JSON string
                 data_set: dataSetName

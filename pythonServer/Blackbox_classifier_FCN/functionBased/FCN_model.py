@@ -16,7 +16,7 @@ class Classifier_FCN:
             if (verbose == True):
                 self.model.summary()
             self.verbose = verbose
-            self.model.save_weights("Blackbox_classifier_FCN/"+str(dataset_name) + '_model_init.hdf5')
+            self.model.save_weights("KerasModels/models/"+str(dataset_name) + '_model_init.weights.h5')
         return
 
     def build_model(self, input_shape, nb_classes):
@@ -46,7 +46,7 @@ class Classifier_FCN:
         reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor='loss', factor=0.5, patience=50,
                                                       min_lr=0.0001)
 
-        file_path = "Blackbox_classifier_FCN/"+ str(self.dataset_name) + '_best_model.hdf5'
+        file_path = "KerasModels/models/"+ str(self.dataset_name) + '.keras'
 
         model_checkpoint = keras.callbacks.ModelCheckpoint(filepath=file_path, monitor='loss',
                                                            save_best_only=True)
@@ -66,9 +66,8 @@ class Classifier_FCN:
         hist = self.model.fit(x_train, y_train, batch_size=mini_batch_size, epochs=nb_epochs,
                               verbose=self.verbose, callbacks=self.callbacks)
 
-        self.model.save("Blackbox_classifier_FCN/"+str(self.dataset_name) + '_last_model.hdf5')
+        model = keras.models.load_model(f"KerasModels/models/{self.dataset_name}" + ".keras")
 
-        model = keras.models.load_model("Blackbox_classifier_FCN/"+str(self.dataset_name) + '_best_model.hdf5')
 
     def predict(self, x_test):
         model_path = "Blackbox_classifier_FCN/"+str(self.dataset_name) + '_best_model.hdf5'

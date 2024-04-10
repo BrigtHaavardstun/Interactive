@@ -41,3 +41,8 @@ def convert_to_lite(dataset):
     # Save the model.
     with open(f'Blackbox_classifier_FCN/LITE/{dataset}.tflite', 'wb') as f:
         f.write(tflite_model)
+
+def convert_to_keras(dataset):
+    model = load_model(dataset)
+
+    model.save(f"KerasModels/models/{dataset}" + ".keras")
