@@ -1,33 +1,39 @@
-.App {
+.FileComponent {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 90vh;
-  width: 95vw;
 }
 
-.header {
-  text-align: center;
-  margin-top: 70px;
-}
-
-.TestData {
-  align-items: center;
-  width: 85%;
-  text-align: center;
-}
-
-.TrainData {
-  align-items: center;
-  width: 84%;
-  hight: 30%;
-  text-align: center;
-
+.InteractiveTool{
+  width: 100%;
 }
 
 .button{
-  width: 90%;
-  margin-left: 80px;
+  width: 100%;
+}
 
+/* Assuming you have HTML elements with class names "float-left" and "float-right" */
+
+.float-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+}
+
+.float-left, .float-right {
+    /* Add any other styling you need for these elements */
+    /* For demonstration purposes, I'm setting a border and padding */
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 5px; /* Add a small space between the elements */
+}
+
+.float-left {
+    /* Style for the left element */
+    /* You can add more specific styling here */
+}
+
+.float-right {
+    /* Style for the right element */
+    /* You can add more specific styling here */
 }

@@ -4,22 +4,25 @@ import axios from 'axios';
 import BasicExample from "./MyProgressBar";
 
 
-export const TrainSetting = () => {
+export const TrainSetting = ({modelName, datasetName, instanceNumber}) => {
     const queryParameters = new URLSearchParams(window.location.search)
-    const dataSetName = queryParameters.get("domain") // domain e.g. ItalyPowerDemand
-    const instance = queryParameters.get("instance") // number, e.g. 7
-    const cf_mode = queryParameters.get("cf_mode") // native / artificial
-    const cf_visable = queryParameters.get("cf_nvisable") == 1
+
+    const cf_mode = "native"//queryParameters.get("cf_mode") // native / artificial
+    const cf_visable = true //queryParameters.get("cf_nvisable") == 1
 
     const color_class_map = {
         "0": "rgba(0,100,255,0.5)",
         "1": "rgba(217,2,250,0.5)"
     }
     const updateColor = (dataSet, colorSet) => {
+        if (!dataSet){
+            return;
+        }
         axios.get('http://localhost:3030/getClass', {
             params: {
                 time_series: JSON.stringify(dataSet),
-                data_set: dataSetName,// Convert dataSet to a JSON string
+                data_set_name: datasetName,// Convert dataSet to a JSON string
+                model_name: modelName
             }
         })
             .then((res) => {
@@ -36,8 +39,10 @@ export const TrainSetting = () => {
     const updateData = (dataSet, setData) => {
         if (Array.isArray(dataSet)) {
             setData([...dataSet]);
-        } else {
+        } else if(dataSet) {
             console.error('Error: updateData was called with a non-array value');
+        } else {
+            return;
         }
     }
 
@@ -46,13 +51,14 @@ export const TrainSetting = () => {
         "rgba(159,159,171,0.25)"
     )
     const [dataSetOriginal, setDataSetOriginal] = useState(
-        [0, 0] // Replace with python call
+        null // Replace with python call
     )
     const getOrgData = () => {
         axios.get('http://localhost:3030/getTS', {
             params: {
-                data_set: dataSetName,
-                index: parseInt(instance),//73=0 171=1// Convert dataSet to a JSON string
+                data_set_name: datasetName,
+                model_name: modelName,
+                index: instanceNumber,//73=0 171=1// Convert dataSet to a JSON string
             }
         })
             .then((res) => {
@@ -66,29 +72,31 @@ export const TrainSetting = () => {
 
     useEffect(() => {
         getOrgData();
-    }, []);
+    }, [modelName, datasetName, instanceNumber]);
 
 
 
 
 
     // Movable data
-    const [dataSetCurr, setDataSetCurr] = useState([...dataSetOriginal]);
+    const [dataSetCurr, setDataSetCurr] = useState(null);
     const [lineColorCurr, setLineColorCurr] = useState('green');
     useEffect(() => { updateColor(dataSetCurr, setLineColorCurr); }, [dataSetCurr]);
-    useEffect(() => {
-        updateData(dataSetOriginal, setDataSetCurr)
-    }, [dataSetOriginal]);
+    useEffect(() => { updateData(dataSetOriginal, setDataSetCurr); }, [dataSetOriginal]);
 
     // Counterfactual data
-    const [dataSetCF, setDataSetCF] = useState([...dataSetCurr])
+    const [dataSetCF, setDataSetCF] = useState(null)
     const [lineColorCF, setLineColorCF] = useState('green');
 
     const getCFData = () => {
+        if (!dataSetCurr){
+            return;
+        }
         axios.get('http://localhost:3030/cf', {
             params: {
                 time_series: JSON.stringify(dataSetCurr),// Convert dataSet to a JSON string
-                data_set: dataSetName,
+                data_set_name: datasetName,
+                model_name: modelName,
                 cf_mode: cf_mode
             }
         })
@@ -111,13 +119,19 @@ export const TrainSetting = () => {
 
 
     const reset = () => {
-        updateData(dataSetOriginal, setDataSetCurr)
+        if (!dataSetOriginal) {
+            updateData(dataSetOriginal, setDataSetCurr)
+        }
     }
-    const updateConfidence = (setConfidence, dataset) => {
+    const updateConfidence = (setConfidence, timeseries) => {
+        if (!timeseries){
+            return;
+        }
         axios.get('http://localhost:3030/confidence', {
             params: {
-                time_series: JSON.stringify(dataset),// Convert dataSet to a JSON string
-                data_set: dataSetName
+                time_series: JSON.stringify(timeseries),// Convert dataSet to a JSON string
+                model_name: modelName,
+                data_set_name: datasetName
             }
         })
             .then((res) => {

@@ -1,9 +1,9 @@
 
 import numpy as np
-from utils.load_data import load_dataset
+from utils.load_data import load_dataset as old_load_dataset
+from utils.load_csv import load_dataset
 
-def get_time_series(dataset,id):
-    X_train, y_train, X_test, y_test = load_dataset(dataset)
-    con_X = np.concatenate([X_train, X_test])
-    return con_X[id]
+def get_time_series(data_set_name,index):
+    x = load_dataset(data_set_name)
+    return x[index]
 

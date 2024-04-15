@@ -96,7 +96,7 @@ def train_test_split_both(dataset_name):
     
 
 
-global DATA_DICT
+DATA_DICT = {}
 def load_dataset(dataset_name):
     global DATA_DICT
     if dataset_name not in DATA_DICT:
@@ -117,7 +117,6 @@ def load_dataset(dataset_name):
         x_train = pd_data_train.iloc[:, 1:].values  
         x_test = pd_data_test.iloc[:,1:].values
 
-    
 
         #normalizer = StandardScaler()
         #x_train = normalizer.fit_transform(x_train)
@@ -144,20 +143,19 @@ def load_dataset(dataset_name):
 
 
 
+def convert_to_csv():
+    datasets = ["ItalyPowerDemand", "Charging", "Chinatown"]
+    for dataset in datasets:
+        x_train, y_train, x_test, y_test= load_dataset(dataset)
+        x = np.concatenate([x_train, x_test])
+        lines = []
+        for row in x:
+            line = ",".join([str(f[0]) for f in row])
+            lines.append(line)
 
+        with open("utils/csvData/" + dataset + ".csv", "w") as f:
+            f.write("\n".join(lines))
 
-DATA_DICT = {}
-def load_dataset_UCR(dataset):
-    global DATA_DICT
-    if dataset not in DATA_DICT:
-        X_train, y_train, X_test, y_test = UCR_UEA_datasets().load_dataset(dataset)
-        #instace_shape = X_train[0].shape
-        #X_train = [np.array(from_org_to_display(instance.flatten()),dtype=np.float32).reshape((DISPLAY_NUM_POINTS,instace_shape[1])) for instance in X_train]
-        #X_test = [np.array(from_org_to_display(instance.flatten()),dtype=np.float32).reshape((DISPLAY_NUM_POINTS,instace_shape[1]))  for instance in X_test]
-        #X_train = np.array(X_train)
-        #X_test = np.array(X_test)
-        DATA_DICT[dataset] = [X_train, y_train, X_test, y_test]
-    return DATA_DICT[dataset]
 
 
 if __name__ == "__main__":

@@ -20,6 +20,8 @@ class Classifier_FCN:
         return
 
     def build_model(self, input_shape, nb_classes):
+        length = input_shape[0]
+        input_shape = (length, 1)
         input_layer = keras.layers.Input(input_shape)
 
         conv1 = keras.layers.Conv1D(filters=128, kernel_size=8, padding='same')(input_layer)

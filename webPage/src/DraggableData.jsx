@@ -6,6 +6,16 @@ import "chartjs-plugin-dragdata";
 
 
 const DraggableGraph = ({ dataSetCurrent, setDataCurrent, dataSetCF, dataSetOriginal, updateData, lineColorCurr, lineColorCF, lineColorOrg }) => {
+  if (!dataSetCurrent){
+    dataSetCurrent = [];
+  }
+  if (!dataSetCF){
+    dataSetCF = [];
+  }
+  if (!dataSetOriginal){
+    dataSetOriginal = [];
+  }
+
   const data_label = Array.from({ length: dataSetOriginal.length }, (_, i) => i);
   const state = {
     dataSet: [dataSetCurrent, dataSetCF, dataSetOriginal],

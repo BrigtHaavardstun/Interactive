@@ -1,14 +1,10 @@
-import React from "react";
+import React,  { useEffect, useState } from "react";
 import "./styles.css";
 import { TrainSetting } from "./TrainSetting";
-//import 'bootstrap/dist/css/bootstrap.min.css';
-import { TestSetting } from "./TestSetting";
+import {ModelUploadComponent} from "./ModelManager"
+import {DatasetUploadComponent} from "./DatasetManager"
 
 
-// <h3>The Prototype is now Interactive.</h3>
-// <h3>See if you manage to change the color of Interactive. Note Counterfactual is updated based on your changes of Interactive, and you can see the AI confidence at the top. </h3>
-// <h3>Note you can press "Reset to Prototype" at the bottom whenever you want.</h3>
-// <h3>When you are done, CLOSE this tab/window, and go back and press Next. </h3>
 const Header = () => (
   <div className="header">
     <h3>The Prototype (a typical example) is now Interactive.</h3>
@@ -18,16 +14,49 @@ const Header = () => (
 );
 
 export default () => {
-  const queryParameters = new URLSearchParams(window.location.search);
-  const mode = queryParameters.get("mode");
+    const queryParameters = new URLSearchParams(window.location.search);
+    const mode = queryParameters.get("mode");
+    const [modelName, setModelName] = useState(null);
+    const [datasetName, setDatasetName] = useState(null);
+    const [instanceNumber, setInstanceNumber] = useState(0);
+
+    const setModelNameFunc = (name) => {
+        setModelName(name);
+        console.log(name)
+    }
+    const setDatasetNameFunc = (name) => {
+        setDatasetName(name);
+        console.log(name)
+    }
+    const setInstanceNumberFunc = (number) => {
+        setInstanceNumber(number);
+    }
 
 
-  return (
+    console.log(modelName)
+    console.log(datasetName)
+    return (
     <div className="App">
-      <Header />
-      {mode === "train" ?
-        <div className="TrainData"><TrainSetting /></div> :
-        <div className="TestData"><TestSetting /></div>}
+        <div className="float-container">
+
+            <div className="float-left">
+                <ModelUploadComponent setModelNameFunc={setModelNameFunc}/>
+            </div>
+
+            <div className="float-right">
+                <DatasetUploadComponent setDatasetNameFunc={setDatasetNameFunc}/>
+            </div>
+
+            <div className="float-right">
+                <h3>Select instance number</h3>
+                <input type="number" defaultValue={instanceNumber} onInput={(event) => {setInstanceNumberFunc(event.target.value)}}/>
+            </div>
+        </div>
+        <div className="InteractiveTool">
+            {(modelName && datasetName) ? <TrainSetting modelName={modelName} datasetName={datasetName} instanceNumber={instanceNumber}/>: <div/>}
+        </div>
     </div>
-  );
+   );
 };
+
+
