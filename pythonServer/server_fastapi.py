@@ -78,13 +78,16 @@ async def get_ts(data_set_name : str = Query(None, description='Name of domain')
 
 
 @app.get('/cf')
-async def get_cf(time_series : str = Query(None, description=''), data_set_name : str = Query(None, description=''), model_name : str = Query(None, description='')):
+async def get_cf(cf_mode : str=Query(None, description=''), time_series : str = Query(None, description=''), data_set_name : str = Query(None, description=''), model_name : str = Query(None, description='')):
     """
     we want to find a counterfactual of the index item to make it positive
     @return A counterfactual time series. For now we only change one time series
     """
     time_series = convert_time_series_str_list_float(time_series)
+    #if cf_mode =="Nearest-Neighbour":
     cf = generate_native_cf(ts=time_series,data_set_name=data_set_name, model_name=model_name).flatten().tolist()
+    #else:
+    #    cf = generate
     return cf
 
 

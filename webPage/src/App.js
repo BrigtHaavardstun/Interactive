@@ -19,6 +19,8 @@ export default () => {
     const [modelName, setModelName] = useState(null);
     const [datasetName, setDatasetName] = useState(null);
     const [instanceNumber, setInstanceNumber] = useState(0);
+    const [cfMethod, setCfMethod] = useState("Nearest-Neighbour");
+
 
     const setModelNameFunc = (name) => {
         setModelName(name);
@@ -30,6 +32,10 @@ export default () => {
     }
     const setInstanceNumberFunc = (number) => {
         setInstanceNumber(number);
+    }
+
+    const setCounterFactualMethod = (name) => {
+        setCfMethod(name);
     }
 
 
@@ -49,14 +55,27 @@ export default () => {
 
             <div className="float-right">
                 <h3>Select instance number</h3>
-                <input type="number" defaultValue={instanceNumber} onInput={(event) => {setInstanceNumberFunc(event.target.value)}}/>
+                <input type="number" defaultValue={instanceNumber} onInput={(event) => {
+                    setInstanceNumberFunc(event.target.value)
+                }}/>
             </div>
+            <div className="float-right">
+                <h3> Select CF method</h3>
+                <select name="cars" id="cars" defaultValue={"Nearest-Neighbour"} onInputCapture={(event) => {setCounterFactualMethod(event.target.value)}}>
+                    <option value="Nearest-Neighbour" >Nearest Neighbour</option>
+                    <option value="Native Guide">Native Guide</option>
+
+                </select>
+            </div>
+
         </div>
         <div className="InteractiveTool">
-            {(modelName && datasetName) ? <TrainSetting modelName={modelName} datasetName={datasetName} instanceNumber={instanceNumber}/>: <div/>}
+            {(modelName && datasetName) ?
+                <TrainSetting modelName={modelName} datasetName={datasetName} instanceNumber={instanceNumber} cfMethod={cfMethod}/> :
+                <div/>}
         </div>
     </div>
-   );
+    );
 };
 
 

@@ -4,11 +4,10 @@ import axios from 'axios';
 import BasicExample from "./MyProgressBar";
 
 
-export const TrainSetting = ({modelName, datasetName, instanceNumber}) => {
+export const TrainSetting = ({modelName, datasetName, instanceNumber, cfMethod}) => {
     const queryParameters = new URLSearchParams(window.location.search)
 
-    const cf_mode = "native"//queryParameters.get("cf_mode") // native / artificial
-    const cf_visable = true //queryParameters.get("cf_nvisable") == 1
+    const cf_mode = cfMethod //native"//queryParameters.get("cf_mode") // native / artificial
 
     const color_class_map = {
         "0": "rgba(0,100,255,0.5)",
