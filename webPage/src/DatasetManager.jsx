@@ -10,9 +10,7 @@ export function DatasetUploadComponent({setDatasetNameFunc}) {
     if (!file){
       return
     }
-
     setSelectedFile(file);
-
     // Create an object of formData
     const formData = new FormData();
     // Update the formData object

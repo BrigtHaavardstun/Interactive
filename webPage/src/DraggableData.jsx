@@ -46,7 +46,7 @@ const DraggableGraph = ({ dataSetCurrent, setDataCurrent, dataSetCF, dataSetOrig
             ticks: {
               display: true,
               min: -2,
-              max: 4,
+              max: 10,
               stepSize: 0.01,
               //maxTicksLimit: 10,
               fontColor: "#9B9B9B",
@@ -101,7 +101,7 @@ const DraggableGraph = ({ dataSetCurrent, setDataCurrent, dataSetCF, dataSetOrig
         borderColor: lineColorCurr,
         borderWidth: 5,
         pointRadius: 7,//7
-        pointHoverRadius: 18,
+        pointHoverRadius: 12,
         pointBackgroundColor: "black",
         pointBorderWidth: 0,
         spanGaps: false,
