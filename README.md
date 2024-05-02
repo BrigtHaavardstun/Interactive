@@ -1,6 +1,6 @@
 # Interactive Time Series Model Inspection Tool
 
-InteractiveCharts with counterfactuals
+Model inspection for Time Series guided by counterfactuals. 
 
 ## Overview
 
