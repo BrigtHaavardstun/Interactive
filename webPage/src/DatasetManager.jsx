@@ -38,12 +38,11 @@ export function DatasetUploadComponent({setDatasetNameFunc}) {
 
 
   return (
-    <div>
-      <h3>Upload a dataset</h3>
-      <input type="file" onChange={handleFileChange} />
-      {selectedFile && (
-        <p>Selected file: {selectedFile.name}</p>
-      )}
-    </div>
+      <div>
+        <h3>Upload a Dataset</h3>
+        <input
+            type="file" onChange={(event) => {handleFileChange(event)}}   />
+        {selectedFile ? <p>Selected file: {selectedFile.name} </p> : null}
+      </div>
   );
 }

@@ -5,7 +5,6 @@ import BasicExample from "./MyProgressBar";
 
 
 export const TrainSetting = ({modelName, datasetName, instanceNumber, cfMethod}) => {
-    const queryParameters = new URLSearchParams(window.location.search)
 
     const cf_mode = cfMethod //native"//queryParameters.get("cf_mode") // native / artificial
 
@@ -14,7 +13,7 @@ export const TrainSetting = ({modelName, datasetName, instanceNumber, cfMethod})
         "1": "rgba(217,2,250,0.5)"
     }
     const updateColor = (dataSet, colorSet) => {
-        if (!dataSet){
+        if (!dataSet || !modelName){
             return;
         }
         axios.get('http://localhost:3030/getClass', {
@@ -71,7 +70,7 @@ export const TrainSetting = ({modelName, datasetName, instanceNumber, cfMethod})
 
     useEffect(() => {
         getOrgData();
-    }, [modelName, datasetName, instanceNumber]);
+    }, [datasetName, instanceNumber]);
 
 
 
@@ -79,16 +78,16 @@ export const TrainSetting = ({modelName, datasetName, instanceNumber, cfMethod})
 
     // Movable data
     const [dataSetCurr, setDataSetCurr] = useState(null);
-    const [lineColorCurr, setLineColorCurr] = useState('green');
-    useEffect(() => { updateColor(dataSetCurr, setLineColorCurr); }, [dataSetCurr]);
+    const [lineColorCurr, setLineColorCurr] = useState( "rgba(159,159,171,0.25)");
+    useEffect(() => { updateColor(dataSetCurr, setLineColorCurr); }, [dataSetCurr,modelName]);
     useEffect(() => { updateData(dataSetOriginal, setDataSetCurr); }, [dataSetOriginal]);
 
     // Counterfactual data
     const [dataSetCF, setDataSetCF] = useState(null)
-    const [lineColorCF, setLineColorCF] = useState('green');
+    const [lineColorCF, setLineColorCF] = useState( "rgba(159,159,171,0.25)");
 
     const getCFData = () => {
-        if (!dataSetCurr){
+        if (!dataSetCurr || !modelName){
             return;
         }
         axios.get('http://localhost:3030/cf', {
@@ -112,8 +111,8 @@ export const TrainSetting = ({modelName, datasetName, instanceNumber, cfMethod})
                 console.error('Error:', error);
             });
     };
-    useEffect(() => { getCFData(); }, [dataSetCurr]);
-    useEffect(() => { updateColor(dataSetCF, setLineColorCF) }, [dataSetCF]);
+    useEffect(() => { getCFData(); }, [dataSetCurr, modelName]);
+    useEffect(() => { updateColor(dataSetCF, setLineColorCF) }, [dataSetCF, modelName]);
 
 
 
@@ -123,7 +122,7 @@ export const TrainSetting = ({modelName, datasetName, instanceNumber, cfMethod})
         }
     }
     const updateConfidence = (setConfidence, timeseries) => {
-        if (!timeseries){
+        if (!timeseries || !modelName){
             return;
         }
         axios.get('http://localhost:3030/confidence', {
@@ -149,8 +148,8 @@ export const TrainSetting = ({modelName, datasetName, instanceNumber, cfMethod})
 
     const [confidence, setConfidence] = useState(100);
     useEffect(() => {
-        updateConfidence(setConfidence, dataSetCurr);
-    }, [dataSetCurr]);
+        updateConfidence(setConfidence, dataSetCurr, modelName);
+    }, [dataSetCurr, modelName]);
 
     return (
         <div>

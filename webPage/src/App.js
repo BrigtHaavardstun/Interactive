@@ -70,7 +70,7 @@ export default () => {
 
         </div>
         <div className="InteractiveTool">
-            {(modelName && datasetName) ?
+            {(datasetName) ?
                 <TrainSetting modelName={modelName} datasetName={datasetName} instanceNumber={instanceNumber} cfMethod={cfMethod}/> :
                 <div/>}
         </div>
