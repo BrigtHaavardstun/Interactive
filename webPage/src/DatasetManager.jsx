@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-export function DatasetUploadComponent({setDatasetNameFunc}) {
+export function DatasetUploadComponent({ setDatasetNameFunc }) {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     console.log(file)
-    if (!file){
+    if (!file) {
       return
     }
     setSelectedFile(file);
@@ -15,9 +15,9 @@ export function DatasetUploadComponent({setDatasetNameFunc}) {
     const formData = new FormData();
     // Update the formData object
     formData.append(
-        "file",
-        file,
-        file.name
+      "file",
+      file,
+      file.name
     );
 
 
@@ -25,7 +25,7 @@ export function DatasetUploadComponent({setDatasetNameFunc}) {
 
     try {
       // Replace with your API endpoint
-      const response = await axios.post('http://localhost:3030/reciveDataset', formData);
+      const response = await axios.post('http://localhost:8000/reciveDataset', formData);
       console.log('File uploaded successfully:', response.data);
       setDatasetNameFunc(file.name)
 
@@ -36,11 +36,11 @@ export function DatasetUploadComponent({setDatasetNameFunc}) {
 
 
   return (
-      <div>
-        <h3>Upload a Dataset</h3>
-        <input
-            type="file" onChange={(event) => {handleFileChange(event)}}   />
-        {selectedFile ? <p>Selected file: {selectedFile.name} </p> : null}
-      </div>
+    <div>
+      <h3>Upload a Dataset</h3>
+      <input
+        type="file" onChange={(event) => { handleFileChange(event) }} />
+      {selectedFile ? <p>Selected file: {selectedFile.name} </p> : null}
+    </div>
   );
 }

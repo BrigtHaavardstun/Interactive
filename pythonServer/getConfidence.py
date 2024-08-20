@@ -1,4 +1,4 @@
-#from Blackbox_classifier_FCN.LITE.predict import predict_lite
+# from Blackbox_classifier_FCN.LITE.predict import predict_lite
 from KerasModels.load_keras_model import model_confidence
 from utils.common import get_domains
 import numpy as np
@@ -8,11 +8,11 @@ from keras import backend as K
 import threading
 
 # Thread-local storage for our TensorFlow model
-#mode_ITALY = load_model("ItalyPowerDemand")
+# mode_ITALY = load_model("ItalyPowerDemand")
 
 
-def get_confidence(time_series:np.ndarray, data_set:str) -> float:
-    print("Dataset:",data_set, "Time_sereies:", time_series)
+def get_confidence(time_series: np.ndarray, data_set: str) -> float:
+    print("Dataset:", data_set, "Time_sereies:", time_series)
     confidence = None
     try:
         print("MODEL CONFIDENC!!")
@@ -27,4 +27,3 @@ def get_confidence(time_series:np.ndarray, data_set:str) -> float:
     print("Confidence complited")
     print("CoNFS return", confidence)
     return confidence
-

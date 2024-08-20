@@ -1,12 +1,11 @@
 from tslearn.neighbors import KNeighborsTimeSeries
 from KerasModels.load_keras_model import model_classify, model_batch_classify
-from utils.load_data import load_dataset
 from utils.load_csv import load_dataset as load_dataset_csv
 import numpy as np
 import pandas as pd
 
 
-def native_guide_retrieval(query, predicted_label, distance, n_neighbors,dataset, model):
+def native_guide_retrieval(query, predicted_label, distance, n_neighbors, dataset, model):
     x = load_dataset_csv(dataset)
     y_pred = model_batch_classify(dataset, model, x)
 
@@ -19,19 +18,22 @@ def native_guide_retrieval(query, predicted_label, distance, n_neighbors,dataset
 
     knn.fit(x[list(df[df['label'] != predicted_label].index.values)])
 
-    dist, ind = knn.kneighbors(query.reshape(1, ts_length), return_distance=True)
+    dist, ind = knn.kneighbors(query.reshape(
+        1, ts_length), return_distance=True)
     print(df[df['label'] != predicted_label].index[ind[0][:]])
     return df[df['label'] != predicted_label].index[ind[0][:]]
 
-def find_native_cf(instance,dataset_name, model_name):
+
+def find_native_cf(instance, dataset_name, model_name):
     # Get label
-    pred_label = model_classify(model_name,instance)
+    pred_label = model_classify(model_name, instance)
 
     # Get NUN of instance
-    nun_idx = native_guide_retrieval(instance, pred_label, 'euclidean', 1, dataset_name, model_name)[0]
+    nun_idx = native_guide_retrieval(
+        instance, pred_label, 'euclidean', 1, dataset_name, model_name)[0]
     x = load_dataset_csv(dataset_name)
 
-    nun_cf =  x[nun_idx]
-    #nun_cf = [val[0] for val in nun_cf]
+    nun_cf = x[nun_idx]
+    # nun_cf = [val[0] for val in nun_cf]
     nun_cf = np.asarray(nun_cf)
     return nun_cf

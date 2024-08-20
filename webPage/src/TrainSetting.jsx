@@ -4,19 +4,26 @@ import axios from 'axios';
 import BasicExample from "./MyProgressBar";
 
 
-export const TrainSetting = ({modelName, datasetName, instanceNumber, cfMethod}) => {
+export const TrainSetting = ({ modelName, datasetName, instanceNumber, cfMethod }) => {
+
+    const addr = "localhost"
+    const port = "8000"
+    const url_and_port = 'http://' + addr + ':' + port + '/'
+    console.log("We are go!")
+    const make_full_url = (endpoint) => {
+        return url_and_port + endpoint
+    };
 
     const cf_mode = cfMethod //native"//queryParameters.get("cf_mode") // native / artificial
-
     const color_class_map = {
         "0": "rgba(0,100,255,0.5)",
         "1": "rgba(217,2,250,0.5)"
     }
     const updateColor = (dataSet, colorSet) => {
-        if (!dataSet || !modelName){
+        if (!dataSet || !modelName) {
             return;
         }
-        axios.get('http://localhost:3030/getClass', {
+        axios.get(make_full_url('getClass'), {
             params: {
                 time_series: JSON.stringify(dataSet),
                 data_set_name: datasetName,// Convert dataSet to a JSON string
@@ -37,7 +44,7 @@ export const TrainSetting = ({modelName, datasetName, instanceNumber, cfMethod})
     const updateData = (dataSet, setData) => {
         if (Array.isArray(dataSet)) {
             setData([...dataSet]);
-        } else if(dataSet) {
+        } else if (dataSet) {
             console.error('Error: updateData was called with a non-array value');
         } else {
             return;
@@ -52,7 +59,8 @@ export const TrainSetting = ({modelName, datasetName, instanceNumber, cfMethod})
         null // Replace with python call
     )
     const getOrgData = () => {
-        axios.get('http://localhost:3030/getTS', {
+        console.log(make_full_url('getTS'))
+        axios.get(make_full_url('getTS'), {
             params: {
                 data_set_name: datasetName,
                 model_name: modelName,
@@ -64,7 +72,7 @@ export const TrainSetting = ({modelName, datasetName, instanceNumber, cfMethod})
                 setDataSetOriginal(res.data);
             })
             .catch((error) => {
-                console.error('Error:', error);
+                console.error('Error getting org:', error);
             });
     };
 
@@ -78,19 +86,19 @@ export const TrainSetting = ({modelName, datasetName, instanceNumber, cfMethod})
 
     // Movable data
     const [dataSetCurr, setDataSetCurr] = useState(null);
-    const [lineColorCurr, setLineColorCurr] = useState( "rgba(159,159,171,0.25)");
-    useEffect(() => { updateColor(dataSetCurr, setLineColorCurr); }, [dataSetCurr,modelName]);
+    const [lineColorCurr, setLineColorCurr] = useState("rgba(159,159,171,0.25)");
+    useEffect(() => { updateColor(dataSetCurr, setLineColorCurr); }, [dataSetCurr, modelName]);
     useEffect(() => { updateData(dataSetOriginal, setDataSetCurr); }, [dataSetOriginal]);
 
     // Counterfactual data
     const [dataSetCF, setDataSetCF] = useState(null)
-    const [lineColorCF, setLineColorCF] = useState( "rgba(159,159,171,0.25)");
+    const [lineColorCF, setLineColorCF] = useState("rgba(159,159,171,0.25)");
 
     const getCFData = () => {
-        if (!dataSetCurr || !modelName){
+        if (!dataSetCurr || !modelName) {
             return;
         }
-        axios.get('http://localhost:3030/cf', {
+        axios.get(make_full_url('cf'), {
             params: {
                 time_series: JSON.stringify(dataSetCurr),// Convert dataSet to a JSON string
                 data_set_name: datasetName,
@@ -122,10 +130,10 @@ export const TrainSetting = ({modelName, datasetName, instanceNumber, cfMethod})
         }
     }
     const updateConfidence = (setConfidence, timeseries) => {
-        if (!timeseries || !modelName){
+        if (!timeseries || !modelName) {
             return;
         }
-        axios.get('http://localhost:3030/confidence', {
+        axios.get(make_full_url('confidence'), {
             params: {
                 time_series: JSON.stringify(timeseries),// Convert dataSet to a JSON string
                 model_name: modelName,
