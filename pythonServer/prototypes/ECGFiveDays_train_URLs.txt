@@ -1,6 +1,0 @@
-0: http://158.42.185.235:8766?domain=ECGFiveDays&cf_mode=artificial&mode=train&instance=745
-1: http://158.42.185.235:8766?domain=ECGFiveDays&cf_mode=artificial&mode=train&instance=535
-2: http://158.42.185.235:8766?domain=ECGFiveDays&cf_mode=artificial&mode=train&instance=119
-3: http://158.42.185.235:8766?domain=ECGFiveDays&cf_mode=artificial&mode=train&instance=721
-4: http://158.42.185.235:8766?domain=ECGFiveDays&cf_mode=artificial&mode=train&instance=648
-5: http://158.42.185.235:8766?domain=ECGFiveDays&cf_mode=artificial&mode=train&instance=23
