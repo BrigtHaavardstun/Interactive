@@ -4,29 +4,27 @@ import axios from 'axios';
 import BasicExample from "./MyProgressBar";
 
 
-export const TrainSetting = ({ modelName, datasetName, instanceNumber, cfMethod }) => {
+export const TrainSetting = ({ modelName, datasetName, instanceNumber, simpMethod, alphaValue }) => {
 
     const addr = "localhost"
     const port = "8000"
     const url_and_port = 'http://' + addr + ':' + port + '/'
-    console.log("We are go!")
     const make_full_url = (endpoint) => {
         return url_and_port + endpoint
     };
 
-    const cf_mode = cfMethod //native"//queryParameters.get("cf_mode") // native / artificial
+    const simp_mode = simpMethod //native"//queryParameters.get("cf_mode") // native / artificial
     const color_class_map = {
         "0": "rgba(0,100,255,0.5)",
         "1": "rgba(217,2,250,0.5)"
     }
-    const updateColor = (dataSet, colorSet) => {
+    const updateColor = (dataSet, colorSet, modelName) => {
         if (!dataSet || !modelName) {
             return;
         }
         axios.get(make_full_url('getClass'), {
             params: {
                 time_series: JSON.stringify(dataSet),
-                data_set_name: datasetName,// Convert dataSet to a JSON string
                 model_name: modelName
             }
         })
@@ -87,31 +85,31 @@ export const TrainSetting = ({ modelName, datasetName, instanceNumber, cfMethod 
     // Movable data
     const [dataSetCurr, setDataSetCurr] = useState(null);
     const [lineColorCurr, setLineColorCurr] = useState("rgba(159,159,171,0.25)");
-    useEffect(() => { updateColor(dataSetCurr, setLineColorCurr); }, [dataSetCurr, modelName]);
-    useEffect(() => { updateData(dataSetOriginal, setDataSetCurr); }, [dataSetOriginal]);
+    useEffect(() => { updateColor(dataSetCurr, setLineColorCurr,modelName); }, [dataSetCurr, modelName]);
+    useEffect(() => { updateData(dataSetOriginal, setDataSetCurr); }, [dataSetOriginal]); // If change original, update moveable also
 
-    // Counterfactual data
-    const [dataSetCF, setDataSetCF] = useState(null)
-    const [lineColorCF, setLineColorCF] = useState("rgba(159,159,171,0.25)");
+    // Simplification data
+    const [dataSetSimp, setDataSetSimp] = useState(null)
+    const [lineColorSimp, setLineColorSimp] = useState("rgba(159,159,171,0.25)");
 
-    const getCFData = () => {
-        if (!dataSetCurr || !modelName) {
+    const getSimpData = (dataSetCurr,simp_mode, alpha) => {
+        console.log(dataSetCurr)
+        if (!dataSetCurr || !simp_mode || !alpha) {
             return;
         }
-        axios.get(make_full_url('cf'), {
+        axios.get(make_full_url('simplification'), {
             params: {
                 time_series: JSON.stringify(dataSetCurr),// Convert dataSet to a JSON string
-                data_set_name: datasetName,
-                model_name: modelName,
-                cf_mode: cf_mode
+                simp_algo: simp_mode,
+                alpha: alpha
             }
         })
             .then((res) => {
 
-                console.log("CF from python:", res.data);
+                console.log("Simp from python:", res.data);
 
                 // Display new counterfactual data
-                setDataSetCF([...res.data]);
+                setDataSetSimp([...res.data]);
 
 
             })
@@ -119,13 +117,13 @@ export const TrainSetting = ({ modelName, datasetName, instanceNumber, cfMethod 
                 console.error('Error:', error);
             });
     };
-    useEffect(() => { getCFData(); }, [dataSetCurr, modelName]);
-    useEffect(() => { updateColor(dataSetCF, setLineColorCF) }, [dataSetCF, modelName]);
+    useEffect(() => { getSimpData(dataSetCurr,simp_mode, alphaValue); }, [dataSetCurr, simp_mode, alphaValue]);
+    useEffect(() => { updateColor(dataSetSimp, setLineColorSimp, modelName) }, [dataSetSimp, modelName]);
 
 
 
     const reset = () => {
-        if (!dataSetOriginal) {
+        if (dataSetOriginal) {
             updateData(dataSetOriginal, setDataSetCurr)
         }
     }
@@ -163,8 +161,8 @@ export const TrainSetting = ({ modelName, datasetName, instanceNumber, cfMethod 
         <div>
             <BasicExample currValue={confidence} />
             <DraggableGraph dataSetCurrent={dataSetCurr} setDataCurrent={setDataSetCurr}
-                dataSetOriginal={dataSetOriginal} updateData={updateData} dataSetCF={dataSetCF}
-                lineColorCurr={lineColorCurr} lineColorOrg={lineColorOrg} lineColorCF={lineColorCF}
+                dataSetOriginal={dataSetOriginal} updateData={updateData} dataSetSimp={dataSetSimp}
+                lineColorCurr={lineColorCurr} lineColorOrg={lineColorOrg} lineColorSimp={lineColorSimp}
             />
             <button className={"button"} onClick={reset} >RESET TO PROTOTYPE</button>
 

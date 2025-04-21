@@ -9,12 +9,13 @@ def load_dataset(dataset_name):
     return array_2d
 
 
-def test():
-    load_dataset("Chinatown.csv")
+def run():
+    dataset = load_dataset("Chinatown.csv")
+    print("hello")
 
 
 if __name__ == "__main__":
-    test()
+    run()
 
 
 

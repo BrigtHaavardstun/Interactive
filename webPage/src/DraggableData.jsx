@@ -5,12 +5,12 @@ import "chartjs-plugin-dragdata";
 
 
 
-const DraggableGraph = ({ dataSetCurrent, setDataCurrent, dataSetCF, dataSetOriginal, updateData, lineColorCurr, lineColorCF, lineColorOrg }) => {
+const DraggableGraph = ({ dataSetCurrent, setDataCurrent, dataSetSimp, dataSetOriginal, updateData, lineColorCurr, lineColorSimp, lineColorOrg }) => {
   if (!dataSetCurrent){
     dataSetCurrent = [];
   }
-  if (!dataSetCF){
-    dataSetCF = [];
+  if (!dataSetSimp){
+    dataSetSimp = [];
   }
   if (!dataSetOriginal){
     dataSetOriginal = [];
@@ -18,7 +18,7 @@ const DraggableGraph = ({ dataSetCurrent, setDataCurrent, dataSetCF, dataSetOrig
 
   const data_label = Array.from({ length: dataSetOriginal.length }, (_, i) => i);
   const state = {
-    dataSet: [dataSetCurrent, dataSetCF, dataSetOriginal],
+    dataSet: [dataSetCurrent, dataSetSimp, dataSetOriginal],
     labels: data_label,
     options: {
       tooltips: { enabled: true },
@@ -46,7 +46,7 @@ const DraggableGraph = ({ dataSetCurrent, setDataCurrent, dataSetCF, dataSetOrig
             ticks: {
               display: true,
               min: -2,
-              max: 10,
+              max: 3,
               stepSize: 0.01,
               //maxTicksLimit: 10,
               fontColor: "#9B9B9B",
@@ -111,14 +111,14 @@ const DraggableGraph = ({ dataSetCurrent, setDataCurrent, dataSetCF, dataSetOrig
 
 
       {
-        label: "Counterfactual",
+        label: "Simplification",
         data: state.dataSet[1],
         lineTension: 0,
-        borderColor: lineColorCF,
+        borderColor: lineColorSimp,
         borderWidth: 5,
         pointRadius: 0,
         pointHoverRadius: 1,
-        pointBackgroundColor: lineColorCF,
+        pointBackgroundColor: lineColorSimp,
         pointBorderWidth: 0,
         spanGaps: false,
         dragData: false,

@@ -12,18 +12,11 @@ import threading
 
 
 def get_confidence(time_series: np.ndarray, data_set: str) -> float:
-    print("Dataset:", data_set, "Time_sereies:", time_series)
     confidence = None
     try:
-        print("MODEL CONFIDENC!!")
         confidence = model_confidence(data_set, time_series)
-        print("CONFS:", confidence)
-        print("MODEL CONFIDENC DONE!")
 
     except Exception as e:
         print(e)
-        print("Error!!!!")
 
-    print("Confidence complited")
-    print("CoNFS return", confidence)
     return confidence

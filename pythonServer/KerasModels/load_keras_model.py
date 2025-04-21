@@ -22,6 +22,18 @@ def model_classify(model_name, time_series):
 PREDICTIONS = {}
 
 
+def no_save_batch_classify(model_name,batch_of_timeseries):
+    model = load_keras_model(model_name)
+
+    # The Batch should already be correct format
+    input_shape = model.input_shape[1:]  # Get Shape
+    batch_of_timeseries = [timeseries.reshape(
+        input_shape) for timeseries in batch_of_timeseries]
+    batch_of_timeseries = np.array(batch_of_timeseries)
+    predictions = model.predict(batch_of_timeseries)
+    class_pred = [np.argmax(prediction) for prediction in predictions]
+    return class_pred
+
 def model_batch_classify(dataset_name, model_name, batch_of_timeseries):
     model_and_data = model_name+dataset_name
     if model_and_data not in PREDICTIONS:

@@ -19,28 +19,30 @@ export default () => {
     const [modelName, setModelName] = useState(null);
     const [datasetName, setDatasetName] = useState(null);
     const [instanceNumber, setInstanceNumber] = useState(0);
-    const [cfMethod, setCfMethod] = useState("Nearest-Neighbour");
+    const [simpMethod, setSimpMethod] = useState("RDP");
+    const [alphaValue, setAlphaValue] = useState(0)
+
 
 
     const setModelNameFunc = (name) => {
         setModelName(name);
-        console.log(name)
     }
     const setDatasetNameFunc = (name) => {
         setDatasetName(name);
-        console.log(name)
     }
     const setInstanceNumberFunc = (number) => {
         setInstanceNumber(number);
     }
 
-    const setCounterFactualMethod = (name) => {
-        setCfMethod(name);
+    const setSimplificationMethod = (name) => {
+        setSimpMethod(name);
+    }
+
+    const setAlphaValueFunc= (number) => {
+        setAlphaValue(number);
     }
 
 
-    console.log(modelName)
-    console.log(datasetName)
     return (
     <div className="App">
         <div className="float-container">
@@ -60,18 +62,23 @@ export default () => {
                 }}/>
             </div>
             <div className="float-right">
-                <h3> Select CF method</h3>
-                <select name="cars" id="cars" defaultValue={"Nearest-Neighbour"} onInputCapture={(event) => {setCounterFactualMethod(event.target.value)}}>
-                    <option value="Nearest-Neighbour" >Nearest Neighbour</option>
-                    <option value="Native Guide">Native Guide</option>
-
+                <h3> Select Simplification method</h3>
+                <select name="cars" id="cars" defaultValue={"RDP"} onInputCapture={(event) => {setSimplificationMethod(event.target.value)}}>
+                    <option value="RDP" >RDP</option>
+                    <option value="VW">VW</option>
                 </select>
+            </div>
+            <div className="float-right">
+                <h3>Select alpha value</h3>
+                <input type="number" defaultValue={instanceNumber} onInput={(event) => {
+                    setAlphaValueFunc(event.target.value)
+                }}/>
             </div>
 
         </div>
         <div className="InteractiveTool">
             {(datasetName) ?
-                <TrainSetting modelName={modelName} datasetName={datasetName} instanceNumber={instanceNumber} cfMethod={cfMethod}/> :
+                <TrainSetting modelName={modelName} datasetName={datasetName} instanceNumber={instanceNumber} simpMethod={simpMethod} alphaValue={alphaValue}/> :
                 <div/>}
         </div>
     </div>
